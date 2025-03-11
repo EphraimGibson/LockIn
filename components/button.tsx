@@ -8,7 +8,7 @@ export default function Button ({label} : Props) {
     return (
         <view>
             <Pressable>
-                cle
+                
             </Pressable>
 
         </view>
