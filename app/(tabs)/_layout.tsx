@@ -7,6 +7,7 @@ export default function TabsLayout() {
                 name="guest"
                 options={{
                     headerTitle: "Welcome Tasker",
+                    title: "Home",
                 }}
             />
             <Tabs.Screen

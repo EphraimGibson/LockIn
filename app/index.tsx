@@ -9,6 +9,9 @@ export default function Index() {
       <Link href="/guest" style={styles.button}>
         <Text style={styles.buttonText}>Get Started</Text>
       </Link>
+      <Link href="/" style={styles.button}>
+        <Text style={styles.buttonText}>      Login    </Text>
+      </Link>
     </View>
   );
 }
