@@ -8,7 +8,6 @@ export default function RootLayout() {
     name="index"
     options={
       {headerTitle:"Home Screen",
-        headerLeft: () => <> </>,
         headerShown: false,
       }
       } 
@@ -18,11 +17,19 @@ export default function RootLayout() {
     name="(tabs)"
     options={
       {headerTitle:"Home Screen",
-        headerLeft: () => <> </>,
         headerShown: false,
       }
       } 
       />
+
+    <Stack.Screen
+      name="addTask"
+      options={{
+        presentation: 'modal',
+        headerTitle: "Add New Task",
+        headerShown: true,
+      }}
+    />
    
   </Stack>
   );
