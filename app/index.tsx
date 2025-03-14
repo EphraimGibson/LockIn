@@ -4,8 +4,8 @@ import { Text, View, StyleSheet } from "react-native";
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>TaskUp</Text>
-      <Text style={{marginTop: 20}}>Welcome to TaskUp, streamline your tasks effortlessly!</Text>
+      <Text style={styles.text}>LockIn</Text>
+      <Text style={{marginTop: 20}}>Welcome to LockIn, streamline your tasks effortlessly!</Text>
       <Link href="/guest" style={styles.button}>
         <Text style={styles.buttonText}>Get Started</Text>
       </Link>
