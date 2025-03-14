@@ -1,50 +1,84 @@
-# Welcome to your Expo app 👋
+# LockIn - Your Smart Task Management Solution
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<div align="center">
+    <h3>Efficiently Manage Tasks with Modern Time Management Techniques</h3>
+</div>
 
-## Get started
+## 📱 About LockIn
 
-1. Install dependencies
+LockIn is a modern, user-friendly to-do list application designed to enhance productivity and task management. Built with React Native and Expo, it offers a seamless experience across multiple platforms while maintaining a clean, intuitive interface.
 
+### Key Features
+
+- 🎯 **Priority-Based Task Organization**: Tasks are automatically sorted and color-coded based on priority levels
+- ⏰ **Time Management Integration**: Built-in support for Pomodoro technique and other time management methods
+- 📝 **Comprehensive Task Details**: Add rich details to your tasks including:
+  - Title and description
+  - Due dates
+  - Priority levels
+  - Time allocation
+- ✅ **Progress Tracking**: Monitor task completion and productivity metrics
+- 🎨 **Modern UI/UX**: Clean, intuitive interface with color coding for easy task identification
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+- Expo CLI
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone [your-repo-link]
+   cd LockIn
+   ```
+
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. Start the development server:
    ```bash
-    npx expo start
+   npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+### Running the App
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **Web**: Press `w` in the development server or run `npm run web`
+- **iOS**: Press `i` in the development server or run `npm run ios`
+- **Android**: Press `a` in the development server or run `npm run android`
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🛠 Technical Stack
 
-## Get a fresh project
+- **Frontend Framework**: React Native
+- **Development Platform**: Expo
+- **Navigation**: Expo Router
+- **UI Components**: Custom components with Material Design influence
 
-When you're ready, run:
+## 🌟 Upcoming Features
 
-```bash
-npm run reset-project
-```
+- [ ] Task Categories and Tags
+- [ ] Custom Time Management Templates
+- [ ] Statistics and Progress Analytics
+- [ ] Task Sharing and Collaboration
+- [ ] Cloud Sync
+  - [ ] Dark Mode Support
+  - [ ] Smart Task Prioritization Algorithm - Intelligent algorithm to automatically suggest priority levels based on due dates and task importance
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📚 Documentation
 
-## Learn more
+For more detailed documentation about the project setup and components, please refer to:
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Native Documentation](https://reactnative.dev/docs/getting-started)
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🤝 Contributing
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Join the community
+## 📄 License
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is licensed under the MIT License - see the LICENSE file for details.
