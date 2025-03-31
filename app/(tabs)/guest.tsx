@@ -1,72 +1,69 @@
-import {Text, View, StyleSheet, Pressable} from "react-native";
+import React from "react";
+import { View, Text, FlatList, Pressable, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { useTaskContext } from "../../context/TaskContext"; // Import the custom hook
 
-export default function Guest(){
-    const router = useRouter();
+export default function Guest() {
+  const { tasks } = useTaskContext(); // Access tasks from the context
+  const router = useRouter(); // Use the router for navigation
 
-    return (
-        <View style={styles.container}>
-            <Text>Hello Great Tasker!</Text>
-            <Text>Click the + button to add a new task</Text>
-            
-            <Pressable 
-                style={styles.fab} 
-                onPress={() => {
-                    router.push("/addTask");
-                }}
-            >
-                <Text style={styles.fabText}>+</Text>
-            </Pressable>
-        </View>
-    )
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Hello Great Tasker!</Text>
+      <Text>Click the + button to add a new task</Text>
+      <FlatList
+        data={tasks} // Pass the tasks array to the FlatList
+        keyExtractor={(item) => item.id.toString()} // Use the task ID as the key
+        renderItem={({ item }) => (
+          <View style={styles.taskCard}>
+            <Text style={styles.taskTitle}>{item.title}</Text>
+          </View>
+        )}
+      />
+      <Pressable
+        style={styles.fab}
+        onPress={() => router.push("/AddTask")} // Navigate to the AddTask screen
+      >
+        <Text style={styles.fabText}>+</Text>
+      </Pressable>
+    </View>
+  );
 }
 
-
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    text: {
-      color: '#654321',
-      fontWeight: 'bold',
-      fontSize: 30,
-      textAlign: 'center',
-    },
-    button: {
-      backgroundColor: 'lightblue',
-      paddingVertical: 10,
-      paddingHorizontal: 50,
-      borderRadius: 5,
-      marginTop: 50,
-    },
-    buttonText:{
-      color: 'black',
-      fontWeight: 'light',
-      fontSize: 15,
-    },
-    fab: {
-      position: 'absolute',
-      width: 56,
-      height: 56,
-      alignItems: 'center',
-      justifyContent: 'center',
-      right: 20,
-      bottom: 20,
-      backgroundColor: '#03A9F4',
-      borderRadius: 28,
-      elevation: 8,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-    },
-    fabText: {
-      fontSize: 30,
-      color: 'white',
-      fontWeight: 'bold',
-    }
-  });
-  
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#fff",
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  taskCard: {
+    padding: 15,
+    marginVertical: 10,
+    backgroundColor: "lightblue",
+    borderRadius: 8,
+  },
+  taskTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  fab: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: "#03A9F4",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  fabText: {
+    fontSize: 30,
+    color: "white",
+  },
+});
