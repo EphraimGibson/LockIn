@@ -1,8 +1,10 @@
+import { TaskProvider } from "@/context/TaskContext";
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
   return (
-  
+    <TaskProvider>
+
   <Stack>
     <Stack.Screen
     name="index"
@@ -23,7 +25,7 @@ export default function RootLayout() {
       />
 
     <Stack.Screen
-      name="addTask"
+      name="AddTask"
       options={{
         presentation: 'modal',
         headerTitle: "Add New Task",
@@ -32,5 +34,6 @@ export default function RootLayout() {
     />
    
   </Stack>
+  </TaskProvider>
   );
 }
