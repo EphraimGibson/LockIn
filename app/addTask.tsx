@@ -1,30 +1,38 @@
 import { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
+import { View, Text, TextInput, StyleSheet, Pressable, Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { useTaskContext } from "@/context/TaskContext"; // Import the TaskProvider
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker"; // Import the DateTimePicker component and DateTimePickerEvent type
 
 export default function AddTask() {
   const { addTask } = useTaskContext(); // Access the addTask function from the context
   const router = useRouter(); // Use the router for navigation
   const [taskTitle, setTaskTitle] = useState(""); // State for the task title
   const [taskDescription, setTaskDescription] = useState(""); // State for the task description
-  const [dueDate, setDueDate] = useState(""); // State for the due date
-
+  const [dueDate, setDueDate] = useState<Date | null>(null); // State for the due date
+  const [showDatePicker, setShowDatePicker] = useState(false); // State to control the visibility of the date picker
   // Function to handle creating a new task
   const handleCreateTask = () => {
     if (taskTitle.trim()) {
-      // Add the new task to the global state
-      addTask({
+
+      addTask({         // Add the new task to the global state
         id: Date.now(), // Generate a unique ID for the task
         title: taskTitle,
         description: taskDescription,
         dueDate,
       });
 
-      // Navigate back to the previous screen
-      router.back();
+      router.back();       // Navigate back to the previous screen
+
     } else {
       alert("Task title is required!"); // Show an alert if the title is empty
+    }
+  };
+
+  const dateChangeHandler = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    setShowDatePicker(false); // Hide the date picker after selecting a date
+    if (selectedDate) {
+      setDueDate(selectedDate);
     }
   };
 
@@ -48,12 +56,22 @@ export default function AddTask() {
         numberOfLines={4}
       />
 
-      <TextInput
+      <Pressable
         style={styles.input}
-        placeholder="Due Date (YYYY-MM-DD)"
-        value={dueDate}
-        onChangeText={setDueDate} // Update the due date state
-      />
+        onPress={() => setShowDatePicker(true)} // Show the date picker when pressed
+      >
+
+      <Text>{dueDate ? dueDate.toISOString().split("T")[0] : "Select a date"}</Text> {/* Display the selected date */}
+    </Pressable>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={dueDate || new Date()} // Current selected date
+          mode="date" // Show only the date picker
+          display={Platform.OS === "ios" ? "inline" : "default"} // Display style
+          onChange={dateChangeHandler} // Handle date selection
+        />
+      )}
 
       <View style={styles.buttonContainer}>
         <Pressable
@@ -122,3 +140,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+function handleDateChange(event: DateTimePickerEvent, date?: Date): void {
+  throw new Error("Function not implemented.");
+}

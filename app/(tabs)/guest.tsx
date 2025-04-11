@@ -22,7 +22,7 @@ export default function Guest() {
       />
       <Pressable
         style={styles.fab}
-        onPress={() => router.push("/AddTask")} // Navigate to the AddTask screen
+        onPress={() => router.push("/addTask")} // Navigate to the AddTask screen
       >
         <Text style={styles.fabText}>+</Text>
       </Pressable>
