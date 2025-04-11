@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, Pressable, Platform } from "react-na
 import { useRouter } from "expo-router";
 import { useTaskContext } from "@/context/TaskContext"; // Import the TaskProvider
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker"; // Import the DateTimePicker component and DateTimePickerEvent type
+import { addTaskstyles } from '../style';
 
 export default function AddTask() {
   const { addTask } = useTaskContext(); // Access the addTask function from the context
@@ -11,8 +12,9 @@ export default function AddTask() {
   const [taskDescription, setTaskDescription] = useState(""); // State for the task description
   const [dueDate, setDueDate] = useState<Date | null>(null); // State for the due date
   const [showDatePicker, setShowDatePicker] = useState(false); // State to control the visibility of the date picker
-  // Function to handle creating a new task
-  const handleCreateTask = () => {
+
+
+  const handleCreateTask = () => {      // Function to handle creating a new task
     if (taskTitle.trim()) {
 
       addTask({         // Add the new task to the global state
@@ -37,18 +39,18 @@ export default function AddTask() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Add New Task</Text>
+    <View style={addTaskstyles.container}>
+      <Text style={addTaskstyles.header}>Add New Task</Text>
 
       <TextInput
-        style={styles.input}
+        style={addTaskstyles.input}
         placeholder="Task Title"
         value={taskTitle}
         onChangeText={setTaskTitle} // Update the task title state
       />
 
       <TextInput
-        style={[styles.input, styles.textArea]}
+        style={[addTaskstyles.input, addTaskstyles.textArea]}
         placeholder="Task Description"
         value={taskDescription}
         onChangeText={setTaskDescription} // Update the task description state
@@ -57,7 +59,7 @@ export default function AddTask() {
       />
 
       <Pressable
-        style={styles.input}
+        style={addTaskstyles.input}
         onPress={() => setShowDatePicker(true)} // Show the date picker when pressed
       >
 
@@ -73,73 +75,25 @@ export default function AddTask() {
         />
       )}
 
-      <View style={styles.buttonContainer}>
+      <View style={addTaskstyles.buttonContainer}>
         <Pressable
-          style={[styles.button, styles.cancelButton]}
+          style={[addTaskstyles.button, addTaskstyles.cancelButton]}
           onPress={() => router.back()} // Navigate back without saving
         >
-          <Text style={styles.buttonText}>Cancel</Text>
+          <Text style={addTaskstyles.buttonText}>Cancel</Text>
         </Pressable>
 
         <Pressable
-          style={[styles.button, styles.createButton]}
+          style={[addTaskstyles.button, addTaskstyles.createButton]}
           onPress={handleCreateTask} // Call the handleCreateTask function
         >
-          <Text style={styles.buttonText}>Create Task</Text>
+          <Text style={addTaskstyles.buttonText}>Create Task</Text>
         </Pressable>
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-    fontSize: 16,
-  },
-  textArea: {
-    height: 100,
-    textAlignVertical: "top",
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  button: {
-    flex: 1,
-    padding: 15,
-    borderRadius: 8,
-    marginHorizontal: 8,
-  },
-  cancelButton: {
-    backgroundColor: "#ff4444",
-  },
-  createButton: {
-    backgroundColor: "#03A9F4",
-  },
-  buttonText: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});
 
 function handleDateChange(event: DateTimePickerEvent, date?: Date): void {
   throw new Error("Function not implemented.");
