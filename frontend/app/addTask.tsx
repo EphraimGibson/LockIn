@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import { useTaskContext } from "@/context/TaskContext"; // Import the TaskProvider
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker"; // Import the DateTimePicker component and DateTimePickerEvent type
 import { addTaskstyles } from '../style';
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export default function AddTask() {
   const { addTask } = useTaskContext(); // Access the addTask function from the context
@@ -67,12 +68,14 @@ export default function AddTask() {
     </Pressable>
 
       {showDatePicker && (
+      
         <DateTimePicker
-          value={dueDate || new Date()} // Current selected date
-          mode="date" // Show only the date picker
-          display={Platform.OS === "ios" ? "inline" : "default"} // Display style
-          onChange={dateChangeHandler} // Handle date selection
-        />
+        value={dueDate || new Date()} // Current selected date
+        mode="date" // Show only the date picker
+      display={Platform.OS === "ios" ? "inline" : "default"} // Display style
+        onChange={dateChangeHandler} // Handle date selection
+      />
+    
       )}
 
       <View style={addTaskstyles.buttonContainer}>
