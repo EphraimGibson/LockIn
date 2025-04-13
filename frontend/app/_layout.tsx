@@ -33,6 +33,13 @@ export default function RootLayout() {
       }}
     />
    
+   <Stack.Screen
+    name="login"
+    options={{
+        headerTitle: "User Login",
+        headerShown:  false,
+    }}
+    />
   </Stack>
   </TaskProvider>
   );

@@ -10,7 +10,7 @@ export default function Index() {
       <Link href="/guest" style={Indexstyles.button}>
         <Text style={Indexstyles.buttonText}>Get Started</Text>
       </Link>
-      <Link href="/" style={Indexstyles.button}>
+      <Link href="./login" style={Indexstyles.button}>
         <Text style={Indexstyles.buttonText}>      Login    </Text>
       </Link>
     </View>

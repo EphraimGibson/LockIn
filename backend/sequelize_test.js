@@ -8,10 +8,10 @@ const User = require('./models/User');
 
 async function createUser() {
      const newUser = await User.create({
-        firstName : 'David',
-        lastName : 'Judas',
-        email: 'goliath@gmail.com',
-        password : 'Champion700BC'
+        firstName : 'test',
+        lastName : 'test',
+        email: 'a@mail.com',
+        password : '12345678'
 
      });
      console.log("Created user", newUser.toJSON());

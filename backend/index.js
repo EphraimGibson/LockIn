@@ -10,15 +10,16 @@ const bcrypt = require('bcrypt');
 app.use(express.json());
 
 app.post("/login", async function (request, response){
-    
+    console.log("request body:", request.body);
+
 try{
     const user = await User.findOne({where : { email: request.body.email } });
 
     if (user &&  await bcrypt.compare(request.body.password, user.password)){
-       response.status(200).send("Login successfull");
+       response.status(200).json({ message: "Login successfull" });
     }
     else{
-        response.status(401).send("Failure to authenticate");
+        response.status(401).json({ error: "Failure to authenticate" });
     }
 
 }
