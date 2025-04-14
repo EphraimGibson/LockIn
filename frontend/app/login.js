@@ -1,4 +1,4 @@
-import { Text, View, TextInput, Pressable } from "react-native";
+import { Text, View, TextInput, Pressable, AsyncStorage } from "react-native";
 import { useState } from "react";
 import { loginStyles } from "../style"
 import { useRouter } from "expo-router";
@@ -23,8 +23,11 @@ export default function login(){
             if (res.ok){
                 const data = await res.json();
                 console.log("Login Successful:", data);
+
+                //store the token using AsyncStorage
+                await AsyncStorage.setItem('token',data.token);
+
                 return true;
-            
             }
             else{
                 console.error("Login failed: ", res.status);
