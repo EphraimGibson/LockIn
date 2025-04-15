@@ -1,5 +1,7 @@
+const { DATEONLY, DATE } = require('sequelize');
 const sequelize = require('./config/database');
-const User = require('./models/User');
+const Tasks = require('./models/Tasks');
+
 
 /*sequelize.sync({force: true}).then(()=>{
     console.log("Database synced");})
@@ -7,14 +9,14 @@ const User = require('./models/User');
 */
 
 async function createUser() {
-     const newUser = await User.create({
-        firstName : 'test',
-        lastName : 'test',
-        email: 'a@mail.com',
-        password : '12345678'
-
+     const newUser = await Tasks.create({
+        Title : 'Make a todo app',
+        Description : 'time mananagement ap by Ephraim must be done',
+        Due_Date: new Date('2025-05-20T00:00:00Z'),
+        Priority_Level : 'High',
+        UserId: 2
      });
-     console.log("Created user", newUser.toJSON());
+     console.log("Created Tasks", newUser.toJSON());
 }
 
 createUser().catch(error=>console.log("failed"));
