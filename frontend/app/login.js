@@ -1,8 +1,9 @@
-import { Text, View, TextInput, Pressable, AsyncStorage } from "react-native";
+import { Text, View, TextInput, Pressable } from "react-native";
 import { useState } from "react";
 import { loginStyles } from "../style"
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function login(){ 
 
@@ -13,7 +14,7 @@ export default function login(){
     async function loginChecker(){
            try{
                 const res = await fetch('http://192.168.1.230:3000/login', {
-                method: 'Post',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -22,40 +23,37 @@ export default function login(){
             })
             if (res.ok){
                 const data = await res.json();
-                console.log("Login Successful:", data);
-
                 //store the token using AsyncStorage
                 await AsyncStorage.setItem('token',data.token);
-
                 return true;
             }
             else{
-                console.error("Login failed: ", res.status);
-                return false;
-            }
-
-           }
-           catch(error){
-            console.error("Issues");
-           }
-    };
-
-    const formHandler = async ()=>{
-        console.log("Button pressed");
-        if (email && password){
-            const success = await loginChecker();
-            if (success){
-                router.push("/guest")
-            }
-            else {
                 Alert.alert(
                     "Login failed",
                     "Invalid Email or Password",
                     [{text: "Ok"}]
                 );
+                return false;
             }
 
-        }else{
+           }
+           catch(error){
+            Alert.alert("Problem connecting to server",
+                "Please try again" ,
+                [{text: 'Ok'}])
+
+            console.error(error.message);
+
+           }
+    };
+
+    const formHandler = async ()=>{
+//        console.log("Button pressed");
+        if (email && password){
+            const success = await loginChecker();
+            if (success) router.push("/guest")
+        }
+        else{
             console.error("Fill in email and password");
         }
      };

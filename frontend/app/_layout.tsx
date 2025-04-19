@@ -25,7 +25,7 @@ export default function RootLayout() {
       />
 
     <Stack.Screen
-      name="AddTask"
+      name="addTask"
       options={{
         presentation: 'modal',
         headerTitle: "Add New Task",
