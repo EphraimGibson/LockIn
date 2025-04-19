@@ -25,7 +25,7 @@ export default function RootLayout() {
       />
 
     <Stack.Screen
-      name="addTask"
+      name="addTaskScreen"
       options={{
         presentation: 'modal',
         headerTitle: "Add New Task",
@@ -34,7 +34,7 @@ export default function RootLayout() {
     />
    
    <Stack.Screen
-    name="login"
+    name="loginScreen"
     options={{
         headerTitle: "User Login",
         headerShown:  false,

@@ -11,13 +11,16 @@ const port = process.env.PORT;
 const router = express.Router();
 const loginRoute = require('./routes/loginRoute');
 const taskRoute = require('./routes/taskRoute');
+const registerRoute = require('./routes/registerRoute');
 
 
 app.use(express.json());
 
 app.use("/login", loginRoute);
 
-app.use('/tasks',taskRoute);
+app.use('/addtasks',taskRoute);
+
+app.use('/sign-up',registerRoute);
 
 
 

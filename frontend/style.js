@@ -117,34 +117,38 @@ const Indexstyles = StyleSheet.create({
   }
 });
 
-const loginStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center', // Center components vertically
-    alignItems: 'center', // Center components horizontally
-    padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-    fontSize: 16,
-  },
-  button: {
-    padding: 15,
-    marginTop: 20,
-    backgroundColor: '#03A9F4', // Make the button visible
-    borderRadius: 8,
-    alignItems: 'center', 
-  },
- 
-})
 
-export { addTaskstyles, Gueststyles, Indexstyles, loginStyles };
+const formStyles = StyleSheet.create(
+  {
+    header: {
+      fontSize: 24,
+      fontWeight: "bold",
+      marginBottom: 20,
+    },  
+    container: {
+      flex: 1,
+      justifyContent: 'center', // Center components vertically
+      alignItems: 'center', // Center components horizontally
+      padding: 20,
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: "#ddd",
+      borderRadius: 8,
+      padding: 12,
+      marginBottom: 16,
+      fontSize: 16,
+      
+    },
+
+    button: {
+      padding: 15,
+      marginTop: 20,
+      backgroundColor: '#03A9F4', // Make the button visible
+      borderRadius: 8,
+      alignItems: 'center', 
+    },
+  }
+)
+
+export { addTaskstyles, Gueststyles, Indexstyles, formStyles };

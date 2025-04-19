@@ -1,6 +1,6 @@
 import { Text, View, TextInput, Pressable } from "react-native";
 import { useState } from "react";
-import { loginStyles } from "../style"
+import { formStyles } from "../style"
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -60,24 +60,24 @@ export default function login(){
     
 
     return (
-        <View style={loginStyles.container}>
-        <Text style={loginStyles.header}> Please Sign-In to Lock in</Text>
+        <View style={formStyles.container}>
+        <Text style={formStyles.header}> Please Sign-In to Lock in</Text>
         <TextInput 
             value={email}
             onChangeText={setEmail}
             placeholder="Enter your email"
-            style= {loginStyles.input}
+            style= {formStyles.input}
             />
         <TextInput
             value={password}
             onChangeText={setPass}
             placeholder="Password"
             secureTextEntry= {true}
-            style= {loginStyles.input}
+            style= {formStyles.input}
             />
         <Pressable 
             onPress={formHandler}
-            style = {loginStyles.button}
+            style = {formStyles.button}
             >
             <Text>Login</Text>
         </Pressable>
