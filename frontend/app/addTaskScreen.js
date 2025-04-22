@@ -17,36 +17,33 @@ export default function AddTask() {
   const [showDatePicker, setShowDatePicker] = useState(false); // State to control the visibility of the date picker
 
 
-  async function postTask(id,Title,Description,Priority_Level,Due_Date) {
-    try{
-            const token = await AsyncStorage.getItem('token');
-            if (token){
-              const res = await fetch('http://192.168.1.230:3000/tasks',
-                {
-                  method : 'POST',
-                  headers: {
-                    'Authorization' : `Bearer ${token}`,
-                    'Content-Type' : 'application/json',
-                  },
-                  body: JSON.stringify({id, Title, Description,Priority_Level, Due_Date}),
-                });
-                if(res.ok){
-                  Alert.alert("Task created succesfully");
-                  return true;
-                }
-                else if (res.status === 401){
-                  Alert.alert("Session expired, please log in again");
-                }
-                else{
-                  Alert.alert("Failed to create Task");
-                }
-            }  
-            return false;
+  async function postTask(id, Title, Description, Priority_Level, Due_Date) {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        const res = await fetch('http://192.168.1.230:3000/tasks', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id, Title, Description, Priority_Level, Due_Date }),
+        });
 
-    }
-    catch(error){
-      Alert.alert("Issues connecting with server", error.message);
+        if (res.ok) {
+          Alert.alert("Task created successfully");
+          return true;
+        } else if (res.status === 401) {
+            Alert.alert("Session expired, please log in again");
+            router.push('/loginScreen');
+        } else {
+            Alert.alert("Failed to create Task");
+        }
+      }
       return false;
+    } catch (error) {
+        Alert.alert("Issues connecting with server", error.message);
+        return false;
     }
   }
     

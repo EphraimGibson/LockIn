@@ -40,6 +40,13 @@ export default function RootLayout() {
         headerShown:  false,
     }}
     />
+     <Stack.Screen
+    name="registerScreen"
+    options={{
+        headerTitle: "User Sign-up",
+        headerShown:  false,
+    }}
+    />
   </Stack>
   </TaskProvider>
   );

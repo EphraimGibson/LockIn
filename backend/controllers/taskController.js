@@ -31,9 +31,34 @@ const addTask =  async function (req,res) {
         if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError'){
             return res.status(401).json({error: 'Invalid or expired token'})
         }
-        console.error("Error adding tasks to DB: " , error.message)
-        res.status(500).send("Internal Server Error:")
+        res.status(500).json({error: `Internal Server Error: ${error.message}` })
     };
 };
 
-module.exports = addTask;
+ async function getTasks(req,res){
+    try{
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+
+        if (!token){
+            return res.status(401).json({error: 'No token provided' })
+        }
+
+        const decoded = jwt.verify( token, process.env.JWT_SECRET );
+
+        const tasks = await Tasks.findAll({where: { UserId : decoded.id }})
+
+        if(tasks){
+            return res.status(200).json({tasks : tasks})
+        }
+
+    }
+    catch(error){
+        if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError'){
+            return res.status(401).json({error: 'Invalid or expired token'})
+        }
+        res.status(500).json({error: `Internal Server Error: ${error.message}` })
+    }
+
+}
+module.exports = { addTask, getTasks };

@@ -14,7 +14,7 @@ export const TaskProvider = ({ children }) => {
 
   // Provide the tasks and addTask function to all children components
   return (
-    <TaskContext.Provider value={{ tasks, addTask }}>
+    <TaskContext.Provider value={{ tasks, addTask, setTasks }}>
       {children}
     </TaskContext.Provider>
   );

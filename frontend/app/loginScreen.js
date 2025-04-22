@@ -51,7 +51,7 @@ export default function login(){
 //        console.log("Button pressed");
         if (email && password){
             const success = await loginChecker();
-            if (success) router.push("/guest")
+            if (success) router.push("/mainScreen")
         }
         else{
             console.error("Fill in email and password");

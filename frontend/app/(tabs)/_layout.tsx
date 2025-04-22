@@ -10,7 +10,7 @@ export default function TabsLayout() {
             }}
         >
             <Tabs.Screen
-                name="guest"
+                name="mainScreen"
                 options={{
                     headerTitle: "Welcome Tasker",
                     title: "Home",

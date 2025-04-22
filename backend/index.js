@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use("/login", loginRoute);
 
-app.use('/addtasks',taskRoute);
+app.use('/tasks',taskRoute);
 
 app.use('/sign-up',registerRoute);
 
