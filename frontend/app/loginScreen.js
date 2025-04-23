@@ -1,9 +1,10 @@
-import { Text, View, TextInput, Pressable } from "react-native";
+import { Text, View, TextInput, Pressable, Keyboard,  Platform } from "react-native";
 import { useState } from "react";
 import { formStyles } from "../style"
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
 
 export default function login(){ 
 
@@ -60,7 +61,12 @@ export default function login(){
     
 
     return (
-        <View style={formStyles.container}>
+    <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+             <View style={formStyles.container}>
         <Text style={formStyles.header}> Please Sign-In to Lock in</Text>
         <TextInput 
             value={email}
@@ -84,6 +90,9 @@ export default function login(){
         
         
         </View>
+        </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+       
     );
 }
 
