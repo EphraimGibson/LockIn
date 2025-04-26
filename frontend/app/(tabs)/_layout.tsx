@@ -1,14 +1,17 @@
 import { Tabs, Stack} from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 
 export default function TabsLayout() {
     return (
-        <Tabs
+        <GestureHandlerRootView><Tabs
             screenOptions={{
                 tabBarActiveTintColor: "black",
                 tabBarInactiveTintColor: "gray",
             }}
         >
+            
             <Tabs.Screen
                 name="mainScreen"
                 options={{
@@ -25,6 +28,6 @@ export default function TabsLayout() {
                     headerTitle: "Completed Tasks",
                 }}
             />
-        </Tabs>
+        </Tabs></GestureHandlerRootView>
     );
 }

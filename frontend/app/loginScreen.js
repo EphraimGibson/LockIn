@@ -28,23 +28,28 @@ export default function login(){
                 await AsyncStorage.setItem('token',data.token);
                 return true;
             }
-            else{
+             
+            if (res.status === 500){Alert.alert("Problem connecting to server",
+                "Please try again later" ,
+                [{text: 'Ok'}])
+            
+            return false}
+            
+
                 Alert.alert(
                     "Login failed",
                     "Invalid Email or Password",
                     [{text: "Ok"}]
                 );
                 return false;
-            }
+    
 
            }
            catch(error){
             Alert.alert("Problem connecting to server",
                 "Please try again" ,
                 [{text: 'Ok'}])
-
-            console.error(error.message);
-
+                return false;
            }
     };
 

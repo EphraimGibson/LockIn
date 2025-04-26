@@ -30,31 +30,35 @@ export default function AddTask() {
         });
 
         if (res.ok) {
+          const data = await res.json(); //get the body of the response from BE
+
           Alert.alert("Task created successfully");
-          return true;
-        } else if (res.status === 401) {
+          return data;
+        } 
+        else if (res.status === 401) {
           Alert.alert("Session expired, please log in again");
           router.push("/loginScreen");
-        } else {
+        }
+         else {
           Alert.alert("Failed to create Task");
         }
       }
-      return false;
+      return null;
     } catch (error) {
       Alert.alert("Issues connecting with server", error.message);
-      return false;
+      return null;
     }
   }
 
   const handleCreateTask = async () => {
     // Function to handle creating a new task
     if (taskTitle.trim()) {
-      const success = await postTask(Date.now(), taskTitle, taskDescription, priority, dueDate);
-
-      if (success) {
+      const result = await postTask(Date.now(), taskTitle, taskDescription, priority, dueDate);
+      
+      if (result) {
         addTask({
           // Add the new task to the global state
-          id: Date.now(), // Generate a unique ID for the task
+          id: result.taskId, // Generate a unique ID for the task
           Title: taskTitle,
           Description: taskDescription,
           Priority_Level: priority,

@@ -21,7 +21,6 @@ const userLogin = async function (request, response){
 
     }
     catch(error){
-        console.error("Error during login: ", error.message);
         response.status(500).send("Internal server error")
     };     
 };

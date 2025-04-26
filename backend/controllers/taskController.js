@@ -21,15 +21,19 @@ const addTask =  async function (req,res) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        await Tasks.create({
+        const newTask = await Tasks.create({
             Title : req.body.Title,
             Description : req.body.Description,
             Due_Date: req.body.Due_Date,
             Priority_Level : req.body.Priority_Level,
             UserId: user.id
         })
+
+        const taskId = newTask.id;
     
-        res.status(201).json({message: 'Task Created Succesfully'});
+        res.status(201).json({message: 'Task Created Succesfully',
+            taskId: taskId // return new id to fe
+        });
     }
     catch(error){
         if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError'){
@@ -68,7 +72,6 @@ const addTask =  async function (req,res) {
 
 async function deleteTask(req,res){
     try{
-        console.log('DELETE /tasks/' + req.params.id, req.headers['authorization']);
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         const taskId = req.params.id;
