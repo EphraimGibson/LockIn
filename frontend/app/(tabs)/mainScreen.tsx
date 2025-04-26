@@ -33,7 +33,7 @@ const renderRightActions =  (
   });
  //animates the swipe to follow the taskcard to the left
   return (
-    <Animated.View style={[{ flex: 1 } , animatedStyle ]}>
+    <Animated.View style={[{ width: 100, height: 60 } , animatedStyle ]}>
       <Pressable
         style={{
           backgroundColor: 'green',

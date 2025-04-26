@@ -10,7 +10,7 @@ export default function Index() {
       <Link href="./registerScreen" style={Indexstyles.button}>
         <Text style={Indexstyles.buttonText}>Get Started</Text>
       </Link>
-      <Link href="./loginScreen" style={Indexstyles.button}>
+      <Link href="./mainScreen" style={Indexstyles.button}>
         <Text style={Indexstyles.buttonText}>      Login    </Text>
       </Link>
     </View>
