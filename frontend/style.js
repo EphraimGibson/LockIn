@@ -67,6 +67,7 @@ const addTaskstyles = StyleSheet.create({
       backgroundColor: "lightblue",
       borderRadius: 8,
       height: 60,
+      margin: 5,
     },
     taskTitle: {
       fontSize: 18,

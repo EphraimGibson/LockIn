@@ -20,7 +20,7 @@ export default function AddTask() {
     try {
       const token = await AsyncStorage.getItem("token");
       if (token) {
-        const res = await fetch("http://192.168.1.230:3000/tasks", {
+        const res = await fetch("http://192.168.1.237:3000/tasks", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

@@ -6,6 +6,7 @@ import { Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
 
+
 export default function login(){ 
 
     const router = useRouter();
@@ -14,7 +15,7 @@ export default function login(){
 
     async function loginChecker(){
            try{
-                const res = await fetch('http://192.168.1.230:3000/login', {
+                const res = await fetch('http://192.168.1.237:3000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
