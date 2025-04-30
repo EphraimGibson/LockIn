@@ -13,19 +13,24 @@ export default function TabsLayout() {
         >
             
             <Tabs.Screen
-                name="mainScreen"
+                name="todayTaskScreen"
                 options={{
-                    headerTitle: "Welcome Tasker",
-                    title: "Home",
+                    headerTitle: "Today's Tasks",
+                    title: "Today",
                     tabBarIcon: ({ focused, color }) => (
-                        <Ionicons name="home" size={24} color={color} />
-                    ),
+                        <Ionicons name="today" size={24} color={color} />)
                 }}
             />
-            <Tabs.Screen
-                name="completedTasks"
+
+        <Tabs.Screen
+                name="allTaskScreen"
                 options={{
-                    headerTitle: "Completed Tasks",
+                    headerTitle: " ",
+                    
+                    title: "Task List",
+                    tabBarIcon: ({ focused, color }) => (
+                        <Ionicons name="list" size={24} color={color} />
+                    ),
                 }}
             />
         </Tabs></GestureHandlerRootView>

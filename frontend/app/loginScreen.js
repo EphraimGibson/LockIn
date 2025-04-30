@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
 
 
+
 export default function login(){ 
 
     const router = useRouter();
@@ -58,7 +59,7 @@ export default function login(){
 //        console.log("Button pressed");
         if (email && password){
             const success = await loginChecker();
-            if (success) router.push("/mainScreen")
+            if (success) router.push("/todayTaskScreen")
         }
         else{
             console.error("Fill in email and password");
