@@ -1,7 +1,6 @@
-
 import {  StyleSheet } from "react-native";
 
-const addTaskstyles = StyleSheet.create({
+ const addTaskstyles = StyleSheet.create({
     container: {
       flex: 1,
       padding: 20,
@@ -47,6 +46,110 @@ const addTaskstyles = StyleSheet.create({
       textAlign: "center",
       fontSize: 16,
       fontWeight: "bold",
+    },
+    priorityContainer: {
+      marginBottom: 16,
+    },
+    priorityLabel: {
+      fontSize: 16,
+      marginBottom: 8,
+    },
+    priorityButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    priorityButton: {
+      flex: 1,
+      padding: 10,
+      marginHorizontal: 4,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: '#03A9F4',
+      backgroundColor: 'white',
+    },
+    priorityButtonSelected: {
+      backgroundColor: '#03A9F4',
+    },
+    priorityButtonText: {
+      textAlign: 'center',
+      color: '#03A9F4',
+    },
+    priorityButtonTextSelected: {
+      color: 'white',
+    },
+    dateContainer: {
+      marginVertical: 10,
+      width: '100%',
+    },
+    dateLabel: {
+      fontSize: 16,
+      marginBottom: 5,
+      color: '#333',
+    },
+    dateInput: {
+      borderWidth: 1,
+      borderColor: '#ddd',
+      borderRadius: 8,
+      padding: 12,
+      backgroundColor: '#fff',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 1.41,
+      elevation: 2,
+    },
+    dateText: {
+      fontSize: 16,
+      color: '#333',
+      fontWeight: '500',
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'flex-end',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+      backgroundColor: 'white',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      paddingBottom: 20,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: -2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+      width: '100%',
+    },
+    modalHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 15,
+      borderBottomWidth: 1,
+      borderBottomColor: '#E5E5E5',
+    },
+    modalButton: {
+      padding: 10,
+    },
+    modalButtonText: {
+      fontSize: 16,
+      color: '#666',
+    },
+    dateTimePicker: {
+      width: '100%',
+      height: 200,
+      backgroundColor: '#f5f5f5',
+    },
+    pickerContainer: {
+      width: '100%',
+      backgroundColor: '#f5f5f5',
+      paddingHorizontal: 0,
+      marginHorizontal: 0,
     },
   });
 

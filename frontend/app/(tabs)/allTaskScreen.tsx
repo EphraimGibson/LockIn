@@ -8,8 +8,40 @@ import { Alert } from "react-native";
 import { useEffect } from "react";
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Animated, { interpolate, useAnimatedStyle} from 'react-native-reanimated';
+import TimeRemainingIndicator from '../../components/TimeRemainingIndicator';
+import dayjs from 'dayjs';
 
+const getEffectivePriority = (task: any) => {
+  const now = dayjs();
+  const dueDate = dayjs(task.Due_Date);
+  const daysUntilDue = dueDate.diff(now, 'day');
 
+  // If due within 3 days, override to High priority
+  if (daysUntilDue <= 3) {
+    return 'High';
+  }
+  // If due within 7 days, override to Medium priority
+  else if (daysUntilDue <= 7) {
+    return 'Medium';
+  }
+  // Otherwise use original priority
+  return task.Priority_Level;
+};
+
+const getTaskCardColor = (task: any) => {
+  const effectivePriority = getEffectivePriority(task);
+  
+  switch (effectivePriority) {
+    case 'High':
+      return '#FFE5E5'; // Light red
+    case 'Medium':
+      return '#FFF3E0'; // Light orange
+    case 'Low':
+      return '#FFFDE7'; // Light yellow
+    default:
+      return '#FFFDE7'; // White
+  }
+};
 
 export default function allTasks() {
 
@@ -118,7 +150,6 @@ catch(error){
     
     <View style={Gueststyles.container}>
       <Text style={Gueststyles.header}>Hello Great Tasker!</Text>
-      <Text>Click the + button to add a new task</Text>
       <FlatList
         data={tasks} // Pass the tasks array to the FlatList
         keyExtractor={(item) => item.id.toString()} // Use the task ID as the key
@@ -126,8 +157,9 @@ catch(error){
         <Swipeable
           renderRightActions={(progess,dragX) => renderRightActions(progess,dragX,item)}
         >
-          <View style={Gueststyles.taskCard}>
+          <View style={[Gueststyles.taskCard, { backgroundColor: getTaskCardColor(item) }]}>
             <Text style={Gueststyles.taskTitle}>{item.Title}</Text>
+            <TimeRemainingIndicator dueDate={item.Due_Date} />
           </View>
         </Swipeable>
         )}

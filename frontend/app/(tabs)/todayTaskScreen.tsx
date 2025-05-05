@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Animated, { interpolate, useAnimatedStyle} from 'react-native-reanimated';
 import dayjs from 'dayjs';
+import TimeRemainingIndicator from '../../components/TimeRemainingIndicator';
 
 
 
@@ -111,34 +112,38 @@ catch(error){
   }
 
 
-  function getRecommendedTasks(tasks) {
-    const today = dayjs().format('YYYY-MM-DD');
+  function getRecommendedTasks(tasks: any[]) {
+    const today = dayjs();
+    const sevenDaysFromNow = today.add(7, 'day');
   
-    // 1. Filter tasks due today
-    let todayTasks = tasks.filter(
-      (task: { Due_Date: string; }) => task.Due_Date === today
-    );
-  
-    // 2. Sort by priority (High > Medium > Low > null)
-    const priorityOrder = { High: 1, Medium: 2, Low: 3, null: 4, undefined: 4 };
-    todayTasks.sort((a, b) => {
-      const aPriority = priorityOrder[a.Priority_Level] || 4;
-      const bPriority = priorityOrder[b.Priority_Level] || 4;
-      if (aPriority !== bPriority) return aPriority - bPriority;
-      // If same priority, sort by Due_Date (earliest first)
-      return (a.Due_Date || '').localeCompare(b.Due_Date || '');
+    // Filter tasks that are either high priority, due within 7 days, or past due
+    let filteredTasks = tasks.filter((task) => {
+      const dueDate = dayjs(task.Due_Date);
+      const isHighPriority = task.Priority_Level === 'High';
+      const isDueWithinSevenDays = dueDate.isBefore(sevenDaysFromNow);
+      const isPastDue = dueDate.isBefore(today);
+      
+      return isHighPriority || isDueWithinSevenDays || isPastDue;
     });
   
-    // 3. If no priority, fallback to earliest due date
-    if (todayTasks.length === 0) {
-      todayTasks = tasks
-        .filter((task: { Due_Date: any; }) => task.Due_Date)
-        .sort((a, b) => (a.Due_Date || '').localeCompare(b.Due_Date || ''));
-    }
+    // Sort by priority and due date
+    filteredTasks.sort((a, b) => {
+      // First sort by priority (High > Medium > Low)
+      const priorityOrder = { High: 1, Medium: 2, Low: 3, null: 4, undefined: 4 };
+      const aPriority = priorityOrder[a.Priority_Level] || 4;
+      const bPriority = priorityOrder[b.Priority_Level] || 4;
+      
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority;
+      }
+      
+      // If same priority, sort by due date (earliest first)
+      const aDate = dayjs(a.Due_Date);
+      const bDate = dayjs(b.Due_Date);
+      return aDate.diff(bDate);
+    });
   
-    // 4. Optionally, limit to top N
-    // return todayTasks.slice(0, 5);
-    return todayTasks;
+    return filteredTasks;
   }
 
  useEffect(() => {
@@ -147,12 +152,42 @@ catch(error){
  }, []);
  const recommendedTasks = getRecommendedTasks(tasks);
 
+ const getEffectivePriority = (task: any) => {
+  const now = dayjs();
+  const dueDate = dayjs(task.Due_Date);
+  const daysUntilDue = dueDate.diff(now, 'day');
+
+  // If due within 3 days, override to High priority
+  if (daysUntilDue <= 3) {
+    return 'High';
+  }
+  // If due within 7 days, override to Medium priority
+  else if (daysUntilDue <= 7) {
+    return 'Medium';
+  }
+  // Otherwise use original priority
+  return task.Priority_Level;
+};
+
+const getTaskCardColor = (task: any) => {
+  const effectivePriority = getEffectivePriority(task);
+  
+  switch (effectivePriority) {
+    case 'High':
+      return '#FFE5E5'; // Light red
+    case 'Medium':
+      return '#FFF3E0'; // Light orange
+    case 'Low':
+      return '#FFFDE7'; // Light yellow
+    default:
+      return '#FFFDE7'; // White
+  }
+};
 
   return (
     
     <View style={Gueststyles.container}>
       <Text style={Gueststyles.header}>Hello Great Tasker!</Text>
-      <Text>Click the + button to add a new task</Text>
       <FlatList
         data={recommendedTasks} // Pass the tasks array to the FlatList
         keyExtractor={(item) => item.id.toString()} // Use the task ID as the key
@@ -160,8 +195,9 @@ catch(error){
         <Swipeable
           renderRightActions={(progess,dragX) => renderRightActions(progess,dragX,item)}
         >
-          <View style={Gueststyles.taskCard}>
+          <View style={[Gueststyles.taskCard, { backgroundColor: getTaskCardColor(item) }]}>
             <Text style={Gueststyles.taskTitle}>{item.Title}</Text>
+            <TimeRemainingIndicator dueDate={item.Due_Date} />
           </View>
         </Swipeable>
         )}
