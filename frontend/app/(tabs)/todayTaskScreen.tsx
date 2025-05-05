@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, FlatList, Pressable, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useTaskContext } from "../../context/TaskContext"; // Import the custom hook
@@ -10,10 +10,11 @@ import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Animated, { interpolate, useAnimatedStyle} from 'react-native-reanimated';
 import dayjs from 'dayjs';
 import TimeRemainingIndicator from '../../components/TimeRemainingIndicator';
-
-
+import TaskDetailsModal from '../../components/TaskDetailsModal';
 
 export default function todayTasks() {
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [showTaskDetails, setShowTaskDetails] = useState(false);
 
 const renderRightActions =  (
   progress: Animated.SharedValue<number>,
@@ -184,6 +185,11 @@ const getTaskCardColor = (task: any) => {
   }
 };
 
+const handleTaskPress = (task) => {
+  setSelectedTask(task);
+  setShowTaskDetails(true);
+};
+
   return (
     
     <View style={Gueststyles.container}>
@@ -192,14 +198,16 @@ const getTaskCardColor = (task: any) => {
         data={recommendedTasks} // Pass the tasks array to the FlatList
         keyExtractor={(item) => item.id.toString()} // Use the task ID as the key
         renderItem={({ item }) => (
-        <Swipeable
-          renderRightActions={(progess,dragX) => renderRightActions(progess,dragX,item)}
-        >
-          <View style={[Gueststyles.taskCard, { backgroundColor: getTaskCardColor(item) }]}>
-            <Text style={Gueststyles.taskTitle}>{item.Title}</Text>
-            <TimeRemainingIndicator dueDate={item.Due_Date} />
-          </View>
-        </Swipeable>
+          <Swipeable
+            renderRightActions={(progess,dragX) => renderRightActions(progess,dragX,item)}
+          >
+            <Pressable onPress={() => handleTaskPress(item)}>
+              <View style={[Gueststyles.taskCard, { backgroundColor: getTaskCardColor(item) }]}>
+                <Text style={Gueststyles.taskTitle}>{item.Title}</Text>
+                <TimeRemainingIndicator dueDate={item.Due_Date} />
+              </View>
+            </Pressable>
+          </Swipeable>
         )}
       />
       <Pressable
@@ -208,6 +216,12 @@ const getTaskCardColor = (task: any) => {
       >
         <Text style={Gueststyles.fabText}>+</Text>
       </Pressable>
+
+      <TaskDetailsModal
+        visible={showTaskDetails}
+        task={selectedTask}
+        onClose={() => setShowTaskDetails(false)}
+      />
     </View>
   );
 }
