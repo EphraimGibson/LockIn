@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, Pressable, StyleSheet } from "react-native";
+import { View, Text, FlatList, Pressable, StyleSheet, Vibration } from "react-native";
 import { useRouter } from "expo-router";
 import { useTaskContext } from "../../context/TaskContext"; // Import the custom hook
 import { Gueststyles } from "@/style";
@@ -10,6 +10,7 @@ import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Animated, { interpolate, useAnimatedStyle} from 'react-native-reanimated';
 import TimeRemainingIndicator from '../../components/TimeRemainingIndicator';
 import TaskDetailsModal from '../../components/TaskDetailsModal';
+import PomodoroModal from '../../components/PomodoroModal';
 import dayjs from 'dayjs';
 
 const getEffectivePriority = (task: any) => {
@@ -47,6 +48,7 @@ const getTaskCardColor = (task: any) => {
 export default function allTasks() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [showTaskDetails, setShowTaskDetails] = useState(false);
+  const [showPomodoro, setShowPomodoro] = useState(false);
 
   const renderRightActions =  (
     progress: Animated.SharedValue<number>,
@@ -154,6 +156,12 @@ export default function allTasks() {
     setShowTaskDetails(true);
   };
 
+  const handleLongPress = (task) => {
+    Vibration.vibrate(100);
+    setSelectedTask(task);
+    setShowPomodoro(true);
+  };
+
   return (
     <View style={Gueststyles.container}>
       <Text style={Gueststyles.header}>Hello Great Tasker!</Text>
@@ -164,7 +172,11 @@ export default function allTasks() {
           <Swipeable
             renderRightActions={(progess,dragX) => renderRightActions(progess,dragX,item)}
           >
-            <Pressable onPress={() => handleTaskPress(item)}>
+            <Pressable 
+              onPress={() => handleTaskPress(item)}
+              onLongPress={() => handleLongPress(item)}
+              delayLongPress={500}
+            >
               <View style={[Gueststyles.taskCard, { backgroundColor: getTaskCardColor(item) }]}>
                 <Text style={Gueststyles.taskTitle}>{item.Title}</Text>
                 <TimeRemainingIndicator dueDate={item.Due_Date} />
@@ -184,6 +196,12 @@ export default function allTasks() {
         visible={showTaskDetails}
         task={selectedTask}
         onClose={() => setShowTaskDetails(false)}
+      />
+
+      <PomodoroModal
+        visible={showPomodoro}
+        task={selectedTask}
+        onClose={() => setShowPomodoro(false)}
       />
     </View>
   );
