@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, Pressable, StyleSheet, Vibration, SafeAreaView } from "react-native";
+import { View, Text, FlatList, Pressable, StyleSheet, Vibration, StatusBar } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from "expo-router";
 import { useTaskContext } from "../../context/TaskContext"; // Import the custom hook
 import { Gueststyles } from "@/style";
@@ -51,41 +52,41 @@ export default function allTasks() {
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [showPomodoro, setShowPomodoro] = useState(false);
 
-  const renderRightActions =  (
+  const renderRightActions = (
     progress: Animated.SharedValue<number>,
     dragX: Animated.SharedValue<number>,
     item: any
   ) => {
     const animatedStyle = useAnimatedStyle(() => {
+      const translateX = interpolate(
+        progress.value,
+        [0, 1],
+        [100, 0]
+      );
       return {
-        transform: [
-          {
-            translateX: interpolate(
-              progress.value,
-              [0, 1],
-              [100, 0]
-            ),
-          },
-        ],
+        transform: [{ translateX }],
       };
     });
-   //animates the swipe to follow the taskcard to the left
+
     return (
-      <Animated.View style={[{ width: 100, height: 60 } , animatedStyle ]}>
-        <Pressable
-          style={{
-            backgroundColor: 'green',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 100,
-            height: '100%',
-          }}
-          onPress={() => handleCompleteTask(item.id)}
-        >
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>Complete</Text>
-        </Pressable>
+      <Animated.View style={[{ 
+        width: 100, 
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'green',
+        borderTopRightRadius: 12,
+        borderBottomRightRadius: 12,
+      }, animatedStyle]}>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>Complete</Text>
       </Animated.View>
     );
+  };
+
+  const handleSwipeableOpen = (direction: string, item: any) => {
+    if (direction === 'right') {
+      handleCompleteTask(item.id);
+    }
   };
 
   const handleCompleteTask = async (taskId: number) =>{
@@ -164,7 +165,8 @@ export default function allTasks() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }} edges={['bottom']}>
+      <StatusBar barStyle="light-content" />
       <LinearGradient
         colors={['#4A90E2', '#357ABD']}
         style={styles.headerGradient}
@@ -182,14 +184,32 @@ export default function allTasks() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <Swipeable
-              renderRightActions={(progess,dragX) => renderRightActions(progess,dragX,item)}
+              renderRightActions={(progress, dragX) => renderRightActions(progress, dragX, item)}
+              onSwipeableOpen={(direction) => handleSwipeableOpen(direction, item)}
+              friction={2}
+              rightThreshold={40}
+              overshootRight={false}
+              containerStyle={{
+                marginVertical: 6,
+                borderRadius: 12,
+                overflow: 'hidden',
+                width: '100%',
+              }}
             >
               <Pressable 
                 onPress={() => handleTaskPress(item)}
                 onLongPress={() => handleLongPress(item)}
                 delayLongPress={500}
               >
-                <View style={[Gueststyles.taskCard, { backgroundColor: getTaskCardColor(item) }]}>
+                <View style={[
+                  Gueststyles.taskCard, 
+                  { 
+                    backgroundColor: getTaskCardColor(item),
+                    margin: 0,
+                    borderRadius: 12,
+                    width: '100%',
+                  }
+                ]}>
                   <Text style={Gueststyles.taskTitle}>{item.Title}</Text>
                   <TimeRemainingIndicator dueDate={item.Due_Date} />
                 </View>
@@ -222,7 +242,7 @@ export default function allTasks() {
 
 const styles = StyleSheet.create({
   headerGradient: {
-    paddingTop: 20,
+    paddingTop: 40,
     paddingBottom: 30,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
