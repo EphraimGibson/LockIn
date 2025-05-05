@@ -23,6 +23,23 @@ export default function RootLayout() {
       }
       } 
       />
+  <Stack.Screen
+        name="onBoardingScreen1"
+        options={
+          {headerTitle:"onBoardingScreen1",
+            headerShown: false,
+          }
+          } 
+        />
+
+        <Stack.Screen
+        name="onBoardingScreen2"
+        options={
+          {headerTitle:"onBoardingScreen2",
+            headerShown: false,
+          }
+          } 
+        />
 
     <Stack.Screen
       name="addTaskScreen"

@@ -1,4 +1,4 @@
-import { Text, View, Pressable, Keyboard, Platform } from "react-native";
+import { Text, View, Pressable, Keyboard, Platform, SafeAreaView } from "react-native";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert } from "react-native";
@@ -94,47 +94,49 @@ export default function UserRegistration() {
     };
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={formStyles.container}>
-                    <Text style={formStyles.header}>
-                        Let's get you registered
-                    </Text>
-                    <TextInput
-                        value={firstName}
-                        onChangeText={setFirstName}
-                        placeholder="Enter your first name"
-                    />
-                    <TextInput
-                        value={lastName}
-                        onChangeText={setLastName}
-                        placeholder="Enter your Last name"
-                    />
-                    <TextInput
-                        value={email}
-                        onChangeText={setEmail}
-                        placeholder="Enter your email"
-                    />
-                    <TextInput
-                        value={password}
-                        onChangeText={setPass}
-                        placeholder="Enter your password"
-                        secureTextEntry
-                    />
-                    <TextInput
-                        value={confirmPassword}
-                        onChangeText={setConfirmPassword}
-                        placeholder="Confirm your password"
-                        secureTextEntry
-                    />
-                    <Pressable onPress={formHandler} style={formStyles.button}>
-                        <Text>Sign-Up</Text>
-                    </Pressable>
-                </View>
-            </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={formStyles.container}>
+                        <Text style={formStyles.header}>
+                            Let's get you registered
+                        </Text>
+                        <TextInput
+                            value={firstName}
+                            onChangeText={setFirstName}
+                            placeholder="Enter your first name"
+                        />
+                        <TextInput
+                            value={lastName}
+                            onChangeText={setLastName}
+                            placeholder="Enter your Last name"
+                        />
+                        <TextInput
+                            value={email}
+                            onChangeText={setEmail}
+                            placeholder="Enter your email"
+                        />
+                        <TextInput
+                            value={password}
+                            onChangeText={setPass}
+                            placeholder="Enter your password"
+                            secureTextEntry
+                        />
+                        <TextInput
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                            placeholder="Confirm your password"
+                            secureTextEntry
+                        />
+                        <Pressable onPress={formHandler} style={formStyles.button}>
+                            <Text>Sign-Up</Text>
+                        </Pressable>
+                    </View>
+                </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
     );
 }

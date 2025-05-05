@@ -16,6 +16,7 @@ export default function TabsLayout() {
                 name="todayTaskScreen"
                 options={{
                     headerTitle: "Today's Tasks",
+                    headerShown: false,
                     title: "Today",
                     tabBarIcon: ({ focused, color }) => (
                         <Ionicons name="today" size={24} color={color} />)
@@ -26,6 +27,7 @@ export default function TabsLayout() {
                 name="allTaskScreen"
                 options={{
                     headerTitle: " ",
+                    headerShown: false,
                     
                     title: "Task List",
                     tabBarIcon: ({ focused, color }) => (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, Pressable, StyleSheet, Vibration } from "react-native";
+import { View, Text, FlatList, Pressable, StyleSheet, Vibration, SafeAreaView } from "react-native";
 import { useRouter } from "expo-router";
 import { useTaskContext } from "../../context/TaskContext"; // Import the custom hook
 import { Gueststyles } from "@/style";
@@ -12,8 +12,9 @@ import dayjs from 'dayjs';
 import TimeRemainingIndicator from '../../components/TimeRemainingIndicator';
 import TaskDetailsModal from '../../components/TaskDetailsModal';
 import PomodoroModal from '../../components/PomodoroModal';
+import { LinearGradient } from 'expo-linear-gradient';
 
-export default function todayTasks() {
+export default function TodayTaskScreen() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [showPomodoro, setShowPomodoro] = useState(false);
@@ -199,48 +200,90 @@ const handleLongPress = (task) => {
 };
 
   return (
-    
-    <View style={Gueststyles.container}>
-      <Text style={Gueststyles.header}>Hello Great Tasker!</Text>
-      <FlatList
-        data={recommendedTasks} // Pass the tasks array to the FlatList
-        keyExtractor={(item) => item.id.toString()} // Use the task ID as the key
-        renderItem={({ item }) => (
-          <Swipeable
-            renderRightActions={(progess,dragX) => renderRightActions(progess,dragX,item)}
-          >
-            <Pressable 
-              onPress={() => handleTaskPress(item)}
-              onLongPress={() => handleLongPress(item)}
-              delayLongPress={500}
-            >
-              <View style={[Gueststyles.taskCard, { backgroundColor: getTaskCardColor(item) }]}>
-                <Text style={Gueststyles.taskTitle}>{item.Title}</Text>
-                <TimeRemainingIndicator dueDate={item.Due_Date} />
-              </View>
-            </Pressable>
-          </Swipeable>
-        )}
-      />
-      <Pressable
-        style={Gueststyles.fab}
-        onPress={() => router.push("/addTaskScreen")} // Navigate to the AddTask screen
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <LinearGradient
+        colors={['#4A90E2', '#357ABD']}
+        style={styles.headerGradient}
       >
-        <Text style={Gueststyles.fabText}>+</Text>
-      </Pressable>
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>Today's Focus</Text>
+          <Text style={styles.headerSubtitle}>
+            Prioritized tasks for today • Long press to start a focus session
+          </Text>
+        </View>
+      </LinearGradient>
+      <View style={[Gueststyles.container, { paddingTop: 0 }]}>
+        <FlatList
+          data={recommendedTasks} // Pass the tasks array to the FlatList
+          keyExtractor={(item) => item.id.toString()} // Use the task ID as the key
+          renderItem={({ item }) => (
+            <Swipeable
+              renderRightActions={(progess,dragX) => renderRightActions(progess,dragX,item)}
+            >
+              <Pressable 
+                onPress={() => handleTaskPress(item)}
+                onLongPress={() => handleLongPress(item)}
+                delayLongPress={500}
+              >
+                <View style={[Gueststyles.taskCard, { backgroundColor: getTaskCardColor(item) }]}>
+                  <Text style={Gueststyles.taskTitle}>{item.Title}</Text>
+                  <TimeRemainingIndicator dueDate={item.Due_Date} />
+                </View>
+              </Pressable>
+            </Swipeable>
+          )}
+        />
+        <Pressable
+          style={Gueststyles.fab}
+          onPress={() => router.push("/addTaskScreen")} // Navigate to the AddTask screen
+        >
+          <Text style={Gueststyles.fabText}>+</Text>
+        </Pressable>
 
-      <TaskDetailsModal
-        visible={showTaskDetails}
-        task={selectedTask}
-        onClose={() => setShowTaskDetails(false)}
-      />
+        <TaskDetailsModal
+          visible={showTaskDetails}
+          task={selectedTask}
+          onClose={() => setShowTaskDetails(false)}
+        />
 
-      <PomodoroModal
-        visible={showPomodoro}
-        task={selectedTask}
-        onClose={() => setShowPomodoro(false)}
-      />
-    </View>
+        <PomodoroModal
+          visible={showPomodoro}
+          task={selectedTask}
+          onClose={() => setShowPomodoro(false)}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  headerGradient: {
+    paddingTop: 20,
+    paddingBottom: 30,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  headerContent: {
+    paddingHorizontal: 20,
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 8,
+  },
+  headerSubtitle: {
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.9)',
+    lineHeight: 22,
+  },
+});
 
