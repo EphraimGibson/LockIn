@@ -25,7 +25,11 @@ const User = sequelize.define('User',{
         validate: {
             len: [8,99],
         }
-        
+    
+    },
+    refreshToken: {
+        type: DataTypes.STRING,
+        allowNull:true,
     }
 })
 

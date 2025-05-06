@@ -1,14 +1,15 @@
 const { DATEONLY, DATE } = require('sequelize');
 const sequelize = require('./config/database');
-const Tasks = require('./models/Tasks');
+const User = require('./models/User');
 
 
-/*sequelize.sync({force: true}).then(()=>{
+
+sequelize.sync({alter: true}).then(()=>{
     console.log("Database synced");})
     .catch((error) => {console.error(error.message);});
-*/
 
-async function createUser() {
+
+/*async function createUser() {
      const newUser = await Tasks.create({
         Title : 'Make a todo app',
         Description : 'time mananagement ap by Ephraim must be done',
@@ -19,4 +20,4 @@ async function createUser() {
      console.log("Created Tasks", newUser.toJSON());
 }
 
-createUser().catch(error=>console.log("failed"));
+createUser().catch(error=>console.log("failed"));*/
