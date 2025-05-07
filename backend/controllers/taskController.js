@@ -13,7 +13,7 @@ const addTask =  async function (req,res) {
             return res.status(401).json({error: 'No token provided' })
         }
 
-        const decoded = jwt.verify( token, process.env.JWT_SECRET) //decode the token
+        const decoded = jwt.verify( token, process.env.ACCESS_SECRET) //decode the token
 
         const user = await User.findOne({ where: {id : decoded.id }})
 
@@ -28,11 +28,9 @@ const addTask =  async function (req,res) {
             Priority_Level : req.body.Priority_Level,
             UserId: user.id
         })
-
-        const taskId = newTask.id;
     
         res.status(201).json({message: 'Task Created Succesfully',
-            taskId: taskId // return new id to fe
+            task: newTask // return new task back to fe
         });
     }
     catch(error){
@@ -52,7 +50,7 @@ const addTask =  async function (req,res) {
             return res.status(401).json({error: 'No token provided' })
         }
 
-        const decoded = jwt.verify( token, process.env.JWT_SECRET );
+        const decoded = jwt.verify( token, process.env.ACCESS_SECRET );
 
         const tasks = await Tasks.findAll({where: { UserId : decoded.id }})
 
@@ -80,7 +78,7 @@ async function deleteTask(req,res){
             return res.status(401).json({error: 'No token provided' })
         }
 
-        const decoded = jwt.verify( token, process.env.JWT_SECRET );
+        const decoded = jwt.verify( token, process.env.ACCESS_SECRET );
 
         const task = await Tasks.findOne({
             where: { 
