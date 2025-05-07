@@ -13,9 +13,12 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { colors, typography, spacing, borderRadius, shadows } from '../theme';
 import { Ionicons } from '@expo/vector-icons';
+import { saveTokens } from '../utils/token';
+import Constants from  'expo-constants'
+
+const IP = Constants.expoConfig.extra.IP;
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -35,18 +38,20 @@ export default function LoginScreen() {
     setError('');
 
     try {
-      const response = await fetch('http://192.168.1.237:3000/login', {
+      const response = await fetch(`http://${IP}:3000/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
+      
 
       const data = await response.json();
 
       if (response.ok) {
-        await AsyncStorage.setItem('token', data.token);
+        await saveTokens(data.accessToken, data.refreshToken);
+        
         router.push('/(tabs)/todayTaskScreen');
       } else {
         setError(data.message || 'Login failed');

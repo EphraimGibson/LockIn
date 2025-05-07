@@ -168,9 +168,9 @@ import {  StyleSheet } from "react-native";
     taskCard: {
       padding: 15,
       backgroundColor: "lightblue",
-      borderRadius: 8,
       height: 60,
-      margin: 5,
+      margin: 0,
+      width: '100%',
     },
     taskTitle: {
       fontSize: 18,

@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from "expo-router";
 import { useTaskContext } from "../../context/TaskContext"; // Import the custom hook
 import { Gueststyles } from "@/style";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from "react-native";
 import { useEffect } from "react";
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
@@ -14,6 +13,11 @@ import TaskDetailsModal from '../../components/TaskDetailsModal';
 import PomodoroModal from '../../components/PomodoroModal';
 import dayjs from 'dayjs';
 import { LinearGradient } from 'expo-linear-gradient';
+import { getTokens } from '../../utils/token';
+import Constants from  'expo-constants'
+
+const IP = Constants.expoConfig.extra.IP;
+
 
 const getEffectivePriority = (task: any) => {
   const now = dayjs();
@@ -43,7 +47,7 @@ const getTaskCardColor = (task: any) => {
     case 'Low':
       return '#FFFDE7'; // Light yellow
     default:
-      return '#FFFDE7'; // White
+      return '#FFFDE7'; 
   }
 };
 
@@ -69,31 +73,30 @@ export default function allTasks() {
     });
 
     return (
-      <Animated.View style={[{ 
-        width: 100, 
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'green',
-        borderTopRightRadius: 12,
-        borderBottomRightRadius: 12,
-      }, animatedStyle]}>
+      <Animated.View style={[{ width: 100, height: 60} , animatedStyle]}>
+        <Pressable
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'green',
+          borderTopRightRadius: 12,
+          borderBottomRightRadius: 12,
+          height: '100%'}}
+          
+          onPress={()=>handleCompleteTask(item.id)}
+     >
         <Text style={{ color: 'white', fontWeight: 'bold' }}>Complete</Text>
+        </Pressable>
       </Animated.View>
     );
   };
-
-  const handleSwipeableOpen = (direction: string, item: any) => {
-    if (direction === 'right') {
-      handleCompleteTask(item.id);
-    }
-  };
-
+  
   const handleCompleteTask = async (taskId: number) =>{
     try {
-      const token = await AsyncStorage.getItem('token');
+      console.log("trying to complete")
+      const token = await getTokens('accessToken');
 
-      const res = await fetch(`http://192.168.1.237:3000/tasks/${taskId}`,{
+      const res = await fetch(`http://${IP}:3000/tasks/${taskId}`,{
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -117,9 +120,9 @@ export default function allTasks() {
 
   async function retrieveTasks(){
     try {
-      const token = await AsyncStorage.getItem('token');
+      const token = await getTokens('accessToken');
 
-      const res = await fetch('http://192.168.1.237:3000/tasks',{
+      const res = await fetch(`http://${IP}:3000/tasks`,{
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -185,9 +188,8 @@ export default function allTasks() {
           renderItem={({ item }) => (
             <Swipeable
               renderRightActions={(progress, dragX) => renderRightActions(progress, dragX, item)}
-              onSwipeableOpen={(direction) => handleSwipeableOpen(direction, item)}
               friction={2}
-              rightThreshold={40}
+              rightThreshold={10}
               overshootRight={false}
               containerStyle={{
                 marginVertical: 6,
@@ -205,9 +207,6 @@ export default function allTasks() {
                   Gueststyles.taskCard, 
                   { 
                     backgroundColor: getTaskCardColor(item),
-                    margin: 0,
-                    borderRadius: 12,
-                    width: '100%',
                   }
                 ]}>
                   <Text style={Gueststyles.taskTitle}>{item.Title}</Text>

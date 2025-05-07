@@ -14,6 +14,10 @@ import TimeRemainingIndicator from '../../components/TimeRemainingIndicator';
 import TaskDetailsModal from '../../components/TaskDetailsModal';
 import PomodoroModal from '../../components/PomodoroModal';
 import { LinearGradient } from 'expo-linear-gradient';
+import { getTokens } from '../../utils/token';
+import Constants from  'expo-constants'
+
+const IP = Constants.expoConfig.extra.IP;
 
 export default function TodayTaskScreen() {
   const [selectedTask, setSelectedTask] = useState(null);
@@ -37,31 +41,33 @@ export default function TodayTaskScreen() {
     });
 
     return (
-      <Animated.View style={[{ 
-        width: 100, 
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'green',
-        borderTopRightRadius: 12,
-        borderBottomRightRadius: 12,
-      }, animatedStyle]}>
+      <Animated.View style={[{ width: 100, height :60 } , animatedStyle]}>
+      <Pressable
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'green',
+          borderTopRightRadius: 12,
+          borderBottomRightRadius: 12,
+          height: '100%',
+          width: '100%',
+        }}
+        onPress= {() => handleCompleteTask(item.id)}
+        >
+
         <Text style={{ color: 'white', fontWeight: 'bold' }}>Complete</Text>
+        </Pressable>
       </Animated.View>
     );
   };
 
-  const handleSwipeableOpen = (direction: string, item: any) => {
-    if (direction === 'right') {
-      handleCompleteTask(item.id);
-    }
-  };
+
 
   const handleCompleteTask = async (taskId: number) =>{
     try {
-      const token = await AsyncStorage.getItem('token');
+      const token = await getTokens('accessToken');
 
-      const res = await fetch(`http://192.168.1.237:3000/tasks/${taskId}`,{
+      const res = await fetch(`http://${IP}:3000/tasks/${taskId}`,{
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -69,7 +75,7 @@ export default function TodayTaskScreen() {
       });
 
       if (res.ok){
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+        setTasks((prevTasks: any[]) => prevTasks.filter((task: { id: number; }) => task.id !== taskId));
       }
       
     }
@@ -85,9 +91,9 @@ export default function TodayTaskScreen() {
 
   async function retrieveTasks(){
     try {
-      const token = await AsyncStorage.getItem('token');
+      const token = await getTokens('accessToken');
 
-      const res = await fetch('http://192.168.1.237:3000/tasks',{
+      const res = await fetch(`http://${IP}:3000/tasks`,{
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -99,11 +105,11 @@ export default function TodayTaskScreen() {
          setTasks(data.tasks);
       }
       else if (res.status == 401){
-        Alert.alert("Session Expires",
+        Alert.alert("Session Expired",
           "Please login again",
           [{text: "Ok"}],
         )
-        router.push('./loginScreen')
+        router.push('../loginScreen')
       }
 
     }
@@ -185,16 +191,16 @@ const getTaskCardColor = (task: any) => {
     case 'Low':
       return '#FFFDE7'; // Light yellow
     default:
-      return '#FFFDE7'; // White
+      return '#FFFDE7'; 
   }
 };
 
-const handleTaskPress = (task) => {
+const handleTaskPress = (task: any) => {
   setSelectedTask(task);
   setShowTaskDetails(true);
 };
 
-const handleLongPress = (task) => {
+const handleLongPress = (task: any) => {
   Vibration.vibrate(100);
   setSelectedTask(task);
   setShowPomodoro(true);
@@ -221,7 +227,6 @@ const handleLongPress = (task) => {
           renderItem={({ item }) => (
             <Swipeable
               renderRightActions={(progress, dragX) => renderRightActions(progress, dragX, item)}
-              onSwipeableOpen={(direction) => handleSwipeableOpen(direction, item)}
               friction={2}
               rightThreshold={40}
               overshootRight={false}
@@ -241,9 +246,6 @@ const handleLongPress = (task) => {
                   Gueststyles.taskCard, 
                   { 
                     backgroundColor: getTaskCardColor(item),
-                    margin: 0,
-                    borderRadius: 12,
-                    width: '100%',
                   }
                 ]}>
                   <Text style={Gueststyles.taskTitle}>{item.Title}</Text>

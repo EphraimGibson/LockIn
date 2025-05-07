@@ -6,6 +6,11 @@ import DateTimePicker from "@react-native-community/datetimepicker"; // Import t
 import { addTaskstyles } from "../style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
+import { getTokens } from '../utils/token';
+import Constants from  'expo-constants'
+
+const IP = Constants.expoConfig.extra.IP;
+
 
 export default function AddTask() {
   const { addTask } = useTaskContext(); // Access the addTask function from the context
@@ -20,9 +25,10 @@ export default function AddTask() {
 
   async function postTask(id, Title, Description, Priority_Level, Due_Date) {
     try {
-      const token = await AsyncStorage.getItem("token");
+      const token = await getTokens('accessToken');
+
       if (token) {
-        const res = await fetch("http://192.168.1.237:3000/tasks", {
+        const res = await fetch(`http://${IP}:3000/tasks`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -110,11 +116,10 @@ export default function AddTask() {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={addTaskstyles.container}>
-          <Text style={addTaskstyles.header}>Add New Task</Text>
-
           <TextInput
             style={addTaskstyles.input}
             placeholder="Task Title"
+            placeholderTextColor={"#666"}
             value={taskTitle}
             onChangeText={setTaskTitle} // Update the task title state
           />
@@ -122,6 +127,7 @@ export default function AddTask() {
           <TextInput
             style={[addTaskstyles.input, addTaskstyles.textArea]}
             placeholder="Task Description"
+            placeholderTextColor={"#666"}
             value={taskDescription}
             onChangeText={setTaskDescription} // Update the task description state
             multiline

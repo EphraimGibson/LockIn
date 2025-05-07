@@ -5,7 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function TabsLayout() {
     return (
-        <GestureHandlerRootView><Tabs
+        <GestureHandlerRootView style={{ flex : 1}}><Tabs
             screenOptions={{
                 tabBarActiveTintColor: "black",
                 tabBarInactiveTintColor: "gray",

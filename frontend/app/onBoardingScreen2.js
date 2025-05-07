@@ -4,6 +4,9 @@ import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import validator from 'validator';
+import Constants from  'expo-constants'
+
+const IP = Constants.expoConfig.extra.IP;
 
 const { width, height } = Dimensions.get('window');
 
@@ -24,7 +27,7 @@ export default function Onboarding2() {
 
   const registerUser = async (firstName, lastName, email, password) => {
     try {
-      const res = await fetch("http://192.168.1.237:3000/sign-up", {
+      const res = await fetch(`http://${IP}:3000/sign-up`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -6,6 +6,9 @@ import { formStyles } from "../style";
 import TextInput from "../components/customTextInput";
 import { KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
 import validator from "validator";
+import Constants from  'expo-constants'
+
+const IP = Constants.expoConfig.extra.IP;
 
 export default function UserRegistration() {
     const router = useRouter();
@@ -17,7 +20,7 @@ export default function UserRegistration() {
 
     async function registerUser() {
         try {
-            const res = await fetch("http://192.168.1.230:3000/sign-up", {
+            const res = await fetch(`http://${IP}:3000/sign-up`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
