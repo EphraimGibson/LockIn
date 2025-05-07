@@ -31,12 +31,14 @@ LockIn is a modern, user-friendly to-do list application designed to enhance pro
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone [your-repo-link]
    cd LockIn
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -72,6 +74,7 @@ LockIn is a modern, user-friendly to-do list application designed to enhance pro
 ## 📚 Documentation
 
 For more detailed documentation about the project setup and components, please refer to:
+
 - [Expo Documentation](https://docs.expo.dev/)
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)
 

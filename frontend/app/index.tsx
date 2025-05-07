@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -7,10 +7,10 @@ import {
   Pressable,
   Dimensions,
   Animated,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { colors, typography, spacing, borderRadius, shadows } from '../theme';
-import { LinearGradient } from 'expo-linear-gradient';
+} from "react-native";
+import { useRouter } from "expo-router";
+import { colors, typography, spacing, borderRadius, shadows } from "../theme";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Index() {
   const router = useRouter();
@@ -48,11 +48,11 @@ export default function Index() {
           ]}
         >
           <Image
-            source={require('../assets/logo.png')}
+            source={require("../assets/logo.png")}
             style={styles.logo}
             resizeMode="contain"
           />
-          
+
           <Text style={styles.title}>Welcome to LockIn</Text>
           <Text style={styles.subtitle}>
             Your personal productivity companion
@@ -65,7 +65,7 @@ export default function Index() {
                 styles.loginButton,
                 pressed && styles.buttonPressed,
               ]}
-              onPress={() => router.push('/onBoardingScreen1')}
+              onPress={() => router.push("/onBoardingScreen1")}
             >
               <Text style={styles.buttonText}>Get Started</Text>
             </Pressable>
@@ -76,7 +76,7 @@ export default function Index() {
                 styles.registerButton,
                 pressed && styles.buttonPressed,
               ]}
-              onPress={() => router.push('/loginScreen')}
+              onPress={() => router.push("/loginScreen")}
             >
               <Text style={[styles.buttonText, styles.registerButtonText]}>
                 Login
@@ -93,7 +93,7 @@ export default function Index() {
   );
 }
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -101,13 +101,13 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   content: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: spacing.xl,
-    width: '100%',
+    width: "100%",
   },
   logo: {
     width: width * 0.4,
@@ -116,30 +116,30 @@ const styles = StyleSheet.create({
     ...shadows.lg,
   },
   title: {
-    fontSize: typography.fontSize['4xl'],
+    fontSize: typography.fontSize["4xl"],
     fontFamily: typography.fontFamily.bold,
     color: colors.white,
     marginBottom: spacing.sm,
-    textAlign: 'center',
+    textAlign: "center",
   },
   subtitle: {
     fontSize: typography.fontSize.lg,
     color: colors.white,
     opacity: 0.9,
-    marginBottom: spacing['2xl'],
-    textAlign: 'center',
+    marginBottom: spacing["2xl"],
+    textAlign: "center",
   },
   buttonContainer: {
-    width: '100%',
+    width: "100%",
     gap: spacing.md,
     marginBottom: spacing.xl,
   },
   button: {
-    width: '100%',
+    width: "100%",
     padding: spacing.lg,
     borderRadius: borderRadius.xl,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     ...shadows.lg,
   },
   buttonPressed: {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   registerButton: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderWidth: 2,
     borderColor: colors.white,
   },
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     fontSize: typography.fontSize.base,
     color: colors.white,
     opacity: 0.8,
-    textAlign: 'center',
-    fontStyle: 'italic',
+    textAlign: "center",
+    fontStyle: "italic",
   },
 });

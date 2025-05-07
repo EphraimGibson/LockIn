@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, Pressable, StyleSheet, Vibration } from 'react-native';
-import * as Audio from 'expo-audio';
+import React, { useState, useEffect } from "react";
+import {
+  Modal,
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  Vibration,
+} from "react-native";
+import * as Audio from "expo-audio";
 
 export default function PomodoroModal({ visible, task, onClose }) {
   const [selectedMode, setSelectedMode] = useState(null); // 'short' or 'long'
@@ -18,12 +25,12 @@ export default function PomodoroModal({ visible, task, onClose }) {
   async function playSound() {
     try {
       const { sound } = await Audio.Sound.createAsync(
-        require('../assets/notification.mp3'),
-        { shouldPlay: true }
+        require("../assets/notification.mp3"),
+        { shouldPlay: true },
       );
       setSound(sound);
     } catch (error) {
-      console.log('Error playing sound:', error);
+      console.log("Error playing sound:", error);
     }
   }
 
@@ -46,12 +53,12 @@ export default function PomodoroModal({ visible, task, onClose }) {
       playSound();
       if (!isBreak) {
         setIsBreak(true);
-        setTimeLeft(selectedMode === 'short' ? SHORT_BREAK : LONG_BREAK);
+        setTimeLeft(selectedMode === "short" ? SHORT_BREAK : LONG_BREAK);
       } else {
         setIsBreak(false);
         setSessions(sessions - 1);
         if (sessions > 1) {
-          setTimeLeft(selectedMode === 'short' ? SHORT_WORK : LONG_WORK);
+          setTimeLeft(selectedMode === "short" ? SHORT_WORK : LONG_WORK);
         } else {
           setIsActive(false);
           onClose();
@@ -64,19 +71,19 @@ export default function PomodoroModal({ visible, task, onClose }) {
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
   const startSession = (mode) => {
     setSelectedMode(mode);
-    setTimeLeft(mode === 'short' ? SHORT_WORK : LONG_WORK);
+    setTimeLeft(mode === "short" ? SHORT_WORK : LONG_WORK);
     setIsActive(true);
     setIsBreak(false);
   };
 
   const getProgressColor = () => {
-    if (isBreak) return '#4CAF50';
-    return selectedMode === 'short' ? '#FF9800' : '#F44336';
+    if (isBreak) return "#4CAF50";
+    return selectedMode === "short" ? "#FF9800" : "#F44336";
   };
 
   return (
@@ -99,18 +106,22 @@ export default function PomodoroModal({ visible, task, onClose }) {
             <View style={styles.modeSelection}>
               <Text style={styles.subtitle}>Choose your focus mode:</Text>
               <Pressable
-                style={[styles.modeButton, { backgroundColor: '#FF9800' }]}
-                onPress={() => startSession('short')}
+                style={[styles.modeButton, { backgroundColor: "#FF9800" }]}
+                onPress={() => startSession("short")}
               >
                 <Text style={styles.modeTitle}>Short Focus</Text>
-                <Text style={styles.modeDescription}>25 min work + 5 min break</Text>
+                <Text style={styles.modeDescription}>
+                  25 min work + 5 min break
+                </Text>
               </Pressable>
               <Pressable
-                style={[styles.modeButton, { backgroundColor: '#F44336' }]}
-                onPress={() => startSession('long')}
+                style={[styles.modeButton, { backgroundColor: "#F44336" }]}
+                onPress={() => startSession("long")}
               >
                 <Text style={styles.modeTitle}>Long Focus</Text>
-                <Text style={styles.modeDescription}>50 min work + 10 min break</Text>
+                <Text style={styles.modeDescription}>
+                  50 min work + 10 min break
+                </Text>
               </Pressable>
             </View>
           ) : (
@@ -120,22 +131,25 @@ export default function PomodoroModal({ visible, task, onClose }) {
                 {formatTime(timeLeft)}
               </Text>
               <Text style={styles.statusText}>
-                {isBreak ? 'Break Time!' : 'Focus Time'}
+                {isBreak ? "Break Time!" : "Focus Time"}
               </Text>
               <Text style={styles.sessionsText}>
-                {sessions} {sessions === 1 ? 'session' : 'sessions'} remaining
+                {sessions} {sessions === 1 ? "session" : "sessions"} remaining
               </Text>
               <View style={styles.controls}>
                 <Pressable
-                  style={[styles.controlButton, { backgroundColor: getProgressColor() }]}
+                  style={[
+                    styles.controlButton,
+                    { backgroundColor: getProgressColor() },
+                  ]}
                   onPress={() => setIsActive(!isActive)}
                 >
                   <Text style={styles.controlButtonText}>
-                    {isActive ? 'Pause' : 'Resume'}
+                    {isActive ? "Pause" : "Resume"}
                   </Text>
                 </Pressable>
                 <Pressable
-                  style={[styles.controlButton, { backgroundColor: '#666' }]}
+                  style={[styles.controlButton, { backgroundColor: "#666" }]}
                   onPress={() => {
                     setIsActive(false);
                     setSelectedMode(null);
@@ -156,17 +170,17 @@ export default function PomodoroModal({ visible, task, onClose }) {
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 20,
-    width: '90%',
+    width: "90%",
     maxWidth: 400,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -176,14 +190,14 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     flex: 1,
     marginRight: 10,
   },
@@ -192,60 +206,60 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     fontSize: 28,
-    color: '#666',
+    color: "#666",
   },
   modeSelection: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   subtitle: {
     fontSize: 18,
     marginBottom: 20,
-    color: '#666',
+    color: "#666",
   },
   modeButton: {
-    width: '100%',
+    width: "100%",
     padding: 20,
     borderRadius: 15,
     marginBottom: 15,
   },
   modeTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
     marginBottom: 5,
   },
   modeDescription: {
     fontSize: 16,
-    color: 'white',
+    color: "white",
     opacity: 0.9,
   },
   timerContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   taskTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   timerText: {
     fontSize: 72,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   statusText: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 10,
   },
   sessionsText: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
     marginBottom: 20,
   },
   controls: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     gap: 10,
   },
   controlButton: {
@@ -255,9 +269,9 @@ const styles = StyleSheet.create({
     minWidth: 100,
   },
   controlButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
+    fontWeight: "600",
+    textAlign: "center",
   },
-}); 
+});

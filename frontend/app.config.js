@@ -1,10 +1,10 @@
-import 'dotenv/config';
+import "dotenv/config";
 
 export default {
-    expo: {
+  expo: {
     scheme: "LockIn",
-      extra: {
-        IP: process.env.IP,
-      },
+    extra: {
+      IP: process.env.IP,
     },
-  };
+  },
+};

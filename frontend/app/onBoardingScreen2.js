@@ -1,27 +1,37 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Pressable, Dimensions, KeyboardAvoidingView, Platform, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
-import validator from 'validator';
-import Constants from  'expo-constants'
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+} from "react-native";
+import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
+import validator from "validator";
+import Constants from "expo-constants";
 
 const IP = Constants.expoConfig.extra.IP;
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 export default function Onboarding2() {
   const router = useRouter();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
 
   const splitName = (fullName) => {
-    const nameParts = fullName.trim().split(' ');
+    const nameParts = fullName.trim().split(" ");
     const firstName = nameParts[0];
-    const lastName = nameParts.slice(1).join(' ');
+    const lastName = nameParts.slice(1).join(" ");
     return { firstName, lastName };
   };
 
@@ -38,19 +48,15 @@ export default function Onboarding2() {
       if (res.ok) {
         return true;
       } else if (res.status === 409) {
-        Alert.alert(
-          "Registration failed",
-          "Email is already registered",
-          [{ text: "OK" }]
-        );
+        Alert.alert("Registration failed", "Email is already registered", [
+          { text: "OK" },
+        ]);
         return false;
       }
     } catch (error) {
-      Alert.alert(
-        "Problem connecting to server",
-        "Please try again",
-        [{ text: "OK" }]
-      );
+      Alert.alert("Problem connecting to server", "Please try again", [
+        { text: "OK" },
+      ]);
       console.error(error.message);
       return false;
     }
@@ -75,19 +81,20 @@ export default function Onboarding2() {
       }
 
       if (password.length < 8) {
-        Alert.alert("Password too short", "Password must be at least 8 characters");
+        Alert.alert(
+          "Password too short",
+          "Password must be at least 8 characters",
+        );
         return;
       }
 
       const { firstName, lastName } = splitName(name);
       const success = await registerUser(firstName, lastName, email, password);
-      
+
       if (success) {
-        Alert.alert(
-          "Thanks for joining us",
-          "Kindly login",
-          [{ text: "Sign-in" }]
-        );
+        Alert.alert("Thanks for joining us", "Kindly login", [
+          { text: "Sign-in" },
+        ]);
         router.push("/loginScreen");
       }
     }
@@ -97,9 +104,14 @@ export default function Onboarding2() {
     <View style={styles.stepContainer}>
       <Text style={styles.title}>What's your name?</Text>
       <Text style={styles.subtitle}>Let's personalize your experience</Text>
-      
+
       <View style={styles.inputContainer}>
-        <Ionicons name="person-outline" size={24} color="#4A90E2" style={styles.inputIcon} />
+        <Ionicons
+          name="person-outline"
+          size={24}
+          color="#4A90E2"
+          style={styles.inputIcon}
+        />
         <TextInput
           style={styles.input}
           placeholder="Enter your full name"
@@ -116,9 +128,14 @@ export default function Onboarding2() {
     <View style={styles.stepContainer}>
       <Text style={styles.title}>Create your account</Text>
       <Text style={styles.subtitle}>Secure your journey to productivity</Text>
-      
+
       <View style={styles.inputContainer}>
-        <Ionicons name="mail-outline" size={24} color="#4A90E2" style={styles.inputIcon} />
+        <Ionicons
+          name="mail-outline"
+          size={24}
+          color="#4A90E2"
+          style={styles.inputIcon}
+        />
         <TextInput
           style={styles.input}
           placeholder="Enter your email"
@@ -131,7 +148,12 @@ export default function Onboarding2() {
       </View>
 
       <View style={styles.inputContainer}>
-        <Ionicons name="lock-closed-outline" size={24} color="#4A90E2" style={styles.inputIcon} />
+        <Ionicons
+          name="lock-closed-outline"
+          size={24}
+          color="#4A90E2"
+          style={styles.inputIcon}
+        />
         <TextInput
           style={[styles.input, { flex: 1 }]}
           placeholder="Create a password (min. 8 characters)"
@@ -155,12 +177,9 @@ export default function Onboarding2() {
   );
 
   return (
-    <LinearGradient
-      colors={['#4A90E2', '#357ABD']}
-      style={styles.container}
-    >
+    <LinearGradient colors={["#4A90E2", "#357ABD"]} style={styles.container}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardView}
       >
         <View style={styles.content}>
@@ -170,11 +189,17 @@ export default function Onboarding2() {
             <Pressable
               style={({ pressed }) => [
                 styles.button,
-                (!name.trim() || (currentStep === 2 && (!email.trim() || password.length < 8))) && styles.buttonDisabled,
-                pressed && styles.buttonPressed
+                (!name.trim() ||
+                  (currentStep === 2 &&
+                    (!email.trim() || password.length < 8))) &&
+                  styles.buttonDisabled,
+                pressed && styles.buttonPressed,
               ]}
               onPress={handleNext}
-              disabled={!name.trim() || (currentStep === 2 && (!email.trim() || password.length < 8))}
+              disabled={
+                !name.trim() ||
+                (currentStep === 2 && (!email.trim() || password.length < 8))
+              }
             >
               <Text style={styles.buttonText}>
                 {currentStep === 1 ? "Next" : "Create Account"}
@@ -196,37 +221,37 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingTop: height * 0.15,
     paddingBottom: height * 0.1,
   },
   stepContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontSize: 32,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 18,
-    color: 'rgba(255, 255, 255, 0.9)',
-    textAlign: 'center',
+    color: "rgba(255, 255, 255, 0.9)",
+    textAlign: "center",
     marginBottom: 40,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
     borderRadius: 15,
     paddingHorizontal: 15,
     marginBottom: 20,
-    width: '100%',
+    width: "100%",
     height: 60,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -241,20 +266,20 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: "#333",
   },
   eyeIcon: {
     padding: 5,
   },
   buttonContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   button: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     paddingHorizontal: 40,
     paddingVertical: 16,
     borderRadius: 30,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -271,8 +296,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
   },
   buttonText: {
-    color: '#4A90E2',
+    color: "#4A90E2",
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
-}); 
+});

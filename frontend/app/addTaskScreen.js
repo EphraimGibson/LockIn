@@ -1,16 +1,26 @@
 import { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Pressable, Keyboard, Platform, Alert, Modal } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  Keyboard,
+  Platform,
+  Alert,
+  Modal,
+} from "react-native";
 import { useRouter } from "expo-router";
 import { useTaskContext } from "@/context/TaskContext"; // Import the TaskProvider
 import DateTimePicker from "@react-native-community/datetimepicker"; // Import the DateTimePicker component
 import { addTaskstyles } from "../style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
-import { getTokens } from '../utils/token';
-import Constants from  'expo-constants'
+import { getTokens } from "../utils/token";
+import Constants from "expo-constants";
 
 const IP = Constants.expoConfig.extra.IP;
-
+import { apiFetch } from "../utils/api";
 
 export default function AddTask() {
   const { addTask } = useTaskContext(); // Access the addTask function from the context
@@ -23,37 +33,34 @@ export default function AddTask() {
 
   const priorityOptions = ["High", "Medium", "Low"];
 
-  async function postTask(id, Title, Description, Priority_Level, Due_Date) {
+  async function postTask(Title, Description, Priority_Level, Due_Date) {
     try {
-      const token = await getTokens('accessToken');
+      const res = await apiFetch("/tasks", {
+        method: "POST",
+        body: JSON.stringify({
+          Title,
+          Description,
+          Priority_Level,
+          Due_Date,
+        }),
+      });
 
-      if (token) {
-        const res = await fetch(`http://${IP}:3000/tasks`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id, Title, Description, Priority_Level, Due_Date }),
-        });
+      if (res.ok) {
+        const data = await res.json(); //get the body of the response from BE
 
-        if (res.ok) {
-          const data = await res.json(); //get the body of the response from BE
-
-          Alert.alert("Task created successfully");
-          return data;
-        } 
-        else if (res.status === 401) {
-          Alert.alert("Session expired, please log in again");
-          router.push("/loginScreen");
-        }
-         else {
-          Alert.alert("Failed to create Task");
-        }
+        Alert.alert("Task created successfully");
+        return data;
+      } else {
+        Alert.alert("Failed to create Task");
+        return null;
       }
-      return null;
     } catch (error) {
-      Alert.alert("Issues connecting with server", error.message);
+      if (error.message === "Session expired") {
+        Alert.alert("Session expired, please log in again");
+        router.push("/loginScreen");
+      } else {
+        Alert.alert("Issues connecting with server", error.message);
+      }
       return null;
     }
   }
@@ -62,18 +69,17 @@ export default function AddTask() {
     if (taskTitle.trim()) {
       // Format the date to ISO string before sending
       const formattedDate = dueDate ? dueDate.toISOString() : null;
-      
+
       const result = await postTask(
-        Date.now(), 
-        taskTitle, 
-        taskDescription, 
-        priority, 
-        formattedDate
+        taskTitle,
+        taskDescription,
+        priority,
+        formattedDate,
       );
-      
+
       if (result) {
         addTask({
-          id: result.taskId,
+          id: result.task.id,
           Title: taskTitle,
           Description: taskDescription,
           Priority_Level: priority,
@@ -99,13 +105,13 @@ export default function AddTask() {
   };
 
   const formatDate = (date) => {
-    if (!date) return '';
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    if (!date) return "";
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -149,7 +155,8 @@ export default function AddTask() {
                   <Text
                     style={[
                       addTaskstyles.priorityButtonText,
-                      priority === option && addTaskstyles.priorityButtonTextSelected,
+                      priority === option &&
+                        addTaskstyles.priorityButtonTextSelected,
                     ]}
                   >
                     {option}
@@ -161,7 +168,7 @@ export default function AddTask() {
 
           <View style={addTaskstyles.dateContainer}>
             <Text style={addTaskstyles.dateLabel}>Due Date & Time:</Text>
-            <Pressable 
+            <Pressable
               style={addTaskstyles.dateInput}
               onPress={() => setShowDatePicker(true)}
             >
@@ -171,7 +178,7 @@ export default function AddTask() {
             </Pressable>
           </View>
 
-          {Platform.OS === 'ios' ? (
+          {Platform.OS === "ios" ? (
             <Modal
               transparent={true}
               visible={showDatePicker}
@@ -190,7 +197,14 @@ export default function AddTask() {
                       style={addTaskstyles.modalButton}
                       onPress={handleDone}
                     >
-                      <Text style={[addTaskstyles.modalButtonText, { color: '#007AFF' }]}>Done</Text>
+                      <Text
+                        style={[
+                          addTaskstyles.modalButtonText,
+                          { color: "#007AFF" },
+                        ]}
+                      >
+                        Done
+                      </Text>
                     </Pressable>
                   </View>
                   <View style={addTaskstyles.pickerContainer}>
@@ -249,27 +263,27 @@ export default function AddTask() {
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingBottom: 20,
   },
   modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
+    borderBottomColor: "#E5E5E5",
   },
   modalButton: {
     padding: 10,
   },
   modalButtonText: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
   },
 });

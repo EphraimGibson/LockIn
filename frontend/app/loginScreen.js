@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -11,53 +11,52 @@ import {
   Keyboard,
   Image,
   ActivityIndicator,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { colors, typography, spacing, borderRadius, shadows } from '../theme';
-import { Ionicons } from '@expo/vector-icons';
-import { saveTokens } from '../utils/token';
-import Constants from  'expo-constants'
+} from "react-native";
+import { useRouter } from "expo-router";
+import { colors, typography, spacing, borderRadius, shadows } from "../theme";
+import { Ionicons } from "@expo/vector-icons";
+import { saveTokens } from "../utils/token";
+import Constants from "expo-constants";
 
 const IP = Constants.expoConfig.extra.IP;
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
       return;
     }
 
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
       const response = await fetch(`http://${IP}:3000/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
-      
 
       const data = await response.json();
 
       if (response.ok) {
         await saveTokens(data.accessToken, data.refreshToken);
-        
-        router.push('/(tabs)/todayTaskScreen');
+
+        router.push("/(tabs)/todayTaskScreen");
       } else {
-        setError(data.message || 'Login failed');
+        setError(data.message || "Login failed");
       }
     } catch (error) {
-      setError('Network error. Please try again.');
+      setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -65,14 +64,14 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.innerContainer}>
           <View style={styles.header}>
             <Image
-              source={require('../assets/logo.png')}
+              source={require("../assets/logo.png")}
               style={styles.logo}
               resizeMode="contain"
             />
@@ -114,7 +113,7 @@ export default function LoginScreen() {
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
                   <Ionicons
-                    name={showPassword ? 'eye-off' : 'eye'}
+                    name={showPassword ? "eye-off" : "eye"}
                     size={24}
                     color={colors.gray[500]}
                   />
@@ -141,10 +140,11 @@ export default function LoginScreen() {
 
             <Pressable
               style={styles.registerButton}
-              onPress={() => router.push('/onBoardingScreen1')}
+              onPress={() => router.push("/onBoardingScreen1")}
             >
               <Text style={styles.registerButtonText}>
-                Don't have an account? <Text style={styles.registerLink}>Sign Up</Text>
+                Don't have an account?{" "}
+                <Text style={styles.registerLink}>Sign Up</Text>
               </Text>
             </Pressable>
           </View>
@@ -162,11 +162,11 @@ const styles = StyleSheet.create({
   innerContainer: {
     flex: 1,
     padding: spacing.xl,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   header: {
-    alignItems: 'center',
-    marginBottom: spacing['2xl'],
+    alignItems: "center",
+    marginBottom: spacing["2xl"],
   },
   logo: {
     width: 120,
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   title: {
-    fontSize: typography.fontSize['3xl'],
+    fontSize: typography.fontSize["3xl"],
     fontFamily: typography.fontFamily.bold,
     color: colors.dark,
     marginBottom: spacing.xs,
@@ -206,14 +206,14 @@ const styles = StyleSheet.create({
   errorText: {
     color: colors.danger,
     fontSize: typography.fontSize.sm,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: spacing.xs,
   },
   loginButton: {
     backgroundColor: colors.primary,
     borderRadius: borderRadius.lg,
     padding: spacing.md,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: spacing.md,
     ...shadows.md,
   },
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     marginTop: spacing.lg,
-    alignItems: 'center',
+    alignItems: "center",
   },
   registerButtonText: {
     fontSize: typography.fontSize.base,
@@ -239,18 +239,17 @@ const styles = StyleSheet.create({
     fontFamily: typography.fontFamily.medium,
   },
   passwordContainer: {
-    position: 'relative',
+    position: "relative",
   },
   passwordInput: {
     paddingRight: spacing.xl * 2, // Make room for the eye icon
   },
   eyeIcon: {
-    position: 'absolute',
+    position: "absolute",
     right: spacing.md,
-    top: '50%',
+    top: "50%",
     transform: [{ translateY: -12 }], // Center the icon vertically
     padding: spacing.xs,
     borderRadius: borderRadius.full,
   },
 });
-
