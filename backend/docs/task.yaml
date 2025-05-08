@@ -1,0 +1,191 @@
+paths:
+  /tasks:
+    post:
+      summary: Create a new task
+      description: Creates a new task for the authenticated user.
+      tags:
+        - Tasks
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Title
+                - Description
+                - Due_Date
+                - Priority_Level
+              properties:
+                Title:
+                  type: string
+                  example: Finish project
+                Description:
+                  type: string
+                  example: Complete the LockIn project by Friday
+                Due_Date:
+                  type: string
+                  format: date-time
+                  example: 2024-05-10T17:00:00.000Z
+                Priority_Level:
+                  type: string
+                  enum: [High, Medium, Low]
+                  example: High
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Task Created Succesfully
+                  task:
+                    $ref: '#/components/schemas/Task'
+        '401':
+          description: Unauthorized or invalid token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid or expired token
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+
+    get:
+      summary: Get all tasks for the authenticated user
+      description: Returns all tasks belonging to the authenticated user.
+      tags:
+        - Tasks
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tasks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+        '401':
+          description: Unauthorized or invalid token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid or expired token
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+
+  /tasks/{id}:
+    delete:
+      summary: Delete a task
+      description: Deletes a task by ID for the authenticated user.
+      tags:
+        - Tasks
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the task to delete
+      responses:
+        '200':
+          description: Task deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Task deleted successfully
+        '401':
+          description: Unauthorized or invalid token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid or expired token
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Task not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        Title:
+          type: string
+          example: Finish project
+        Description:
+          type: string
+          example: Complete the LockIn project by Friday
+        Due_Date:
+          type: string
+          format: date-time
+          example: 2024-05-10T17:00:00.000Z
+        Priority_Level:
+          type: string
+          enum: [High, Medium, Low]
+          example: High
+        UserId:
+          type: integer
+          example: 2
