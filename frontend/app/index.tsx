@@ -53,7 +53,6 @@ export default function Index() {
             resizeMode="contain"
           />
 
-          <Text style={styles.title}>Welcome to LockIn</Text>
           <Text style={styles.subtitle}>
             Your personal productivity companion
           </Text>
@@ -110,9 +109,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   logo: {
-    width: width * 0.4,
-    height: width * 0.4,
-    marginBottom: spacing.xl,
+    width: width * 0.7,
+    height: width * 0.6,
+    marginBottom: spacing.md,
     ...shadows.lg,
   },
   title: {
@@ -124,10 +123,11 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: typography.fontSize.lg,
-    color: colors.white,
+    color: colors.black,
     opacity: 0.9,
     marginBottom: spacing["2xl"],
     textAlign: "center",
+    
   },
   buttonContainer: {
     width: "100%",

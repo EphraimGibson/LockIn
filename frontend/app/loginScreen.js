@@ -9,6 +9,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
   Image,
   ActivityIndicator,
 } from "react-native";
@@ -17,6 +18,8 @@ import { colors, typography, spacing, borderRadius, shadows } from "../theme";
 import { Ionicons } from "@expo/vector-icons";
 import { saveTokens } from "../utils/token";
 import Constants from "expo-constants";
+import { LinearGradient } from "expo-linear-gradient";
+
 
 const IP = Constants.expoConfig.extra.IP;
 
@@ -68,7 +71,9 @@ export default function LoginScreen() {
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        
         <View style={styles.innerContainer}>
+        
           <View style={styles.header}>
             <Image
               source={require("../assets/logo.png")}
@@ -148,30 +153,41 @@ export default function LoginScreen() {
               </Text>
             </Pressable>
           </View>
+          
         </View>
       </TouchableWithoutFeedback>
+
     </KeyboardAvoidingView>
   );
 }
 
+const { width, height } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: 'black',
+  },
+  gradient: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   innerContainer: {
     flex: 1,
     padding: spacing.xl,
     justifyContent: "center",
+
   },
   header: {
     alignItems: "center",
     marginBottom: spacing["2xl"],
   },
   logo: {
-    width: 120,
-    height: 120,
-    marginBottom: spacing.lg,
+    width: width * 0.8,
+    height: width * 0.6,
+    marginBottom: spacing.md,
+    ...shadows.lg,
   },
   title: {
     fontSize: typography.fontSize["3xl"],
@@ -210,7 +226,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   loginButton: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#5483eb',
     borderRadius: borderRadius.lg,
     padding: spacing.md,
     alignItems: "center",
