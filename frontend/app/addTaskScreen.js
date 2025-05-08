@@ -14,9 +14,7 @@ import { useRouter } from "expo-router";
 import { useTaskContext } from "@/context/TaskContext"; // Import the TaskProvider
 import DateTimePicker from "@react-native-community/datetimepicker"; // Import the DateTimePicker component
 import { addTaskstyles } from "../style";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
-import { getTokens } from "../utils/token";
 import Constants from "expo-constants";
 
 const IP = Constants.expoConfig.extra.IP;
@@ -95,6 +93,9 @@ export default function AddTask() {
   const dateChangeHandler = (event, selectedDate) => {
     // Only close the picker when Done is pressed
     if (selectedDate) {
+      if (Platform.OS === "android") {
+        setShowDatePicker(false); // Always hide picker on Android
+      }
       const date = new Date(selectedDate);
       setDueDate(date);
     }
@@ -224,18 +225,13 @@ export default function AddTask() {
             </Modal>
           ) : (
             showDatePicker && (
-              <View style={addTaskstyles.pickerContainer}>
-                <DateTimePicker
-                  value={dueDate || new Date()}
-                  mode="datetime"
-                  display="spinner"
-                  onChange={dateChangeHandler}
-                  minimumDate={new Date()}
-                  style={addTaskstyles.dateTimePicker}
-                  textColor="#000000"
-                  themeVariant="light"
-                />
-              </View>
+              <DateTimePicker
+                value={dueDate || new Date()}
+                mode="date"
+                display="spinner"
+                onChange={dateChangeHandler}
+                minimumDate={new Date()}
+              />
             )
           )}
 
