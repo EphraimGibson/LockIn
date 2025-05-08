@@ -10,14 +10,14 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.LockIn"
+      "bundleIdentifier": "com.remy.LockIn"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.LockIn"
+      "package": "com.remy.LockIn"
     },
     "web": {
       "bundler": "metro",
