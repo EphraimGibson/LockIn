@@ -6,7 +6,7 @@ const path = require('path');
 require('dotenv').config({path: path.resolve(__dirname,'./environment/dev.env')});
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 const loginRoute = require('./routes/loginRoute');
 const taskRoute = require('./routes/taskRoute');
