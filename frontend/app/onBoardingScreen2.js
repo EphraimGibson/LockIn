@@ -37,7 +37,7 @@ export default function Onboarding2() {
 
   const registerUser = async (firstName, lastName, email, password) => {
     try {
-      const res = await fetch(`http://${IP}:3000/sign-up`, {
+      const res = await fetch(`${IP}/sign-up`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -41,7 +41,7 @@ export default function LoginScreen() {
     setError("");
 
     try {
-      const response = await fetch(`http://${IP}:3000/login`, {
+      const response = await fetch(`${IP}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -3,7 +3,7 @@ import Constants from "expo-constants";
 
 const IP = Constants.expoConfig.extra.IP;
 
-const API_BASE = `http://${IP}:3000`;
+const API_BASE = `${IP}`;
 
 export async function apiFetch(url, options = {}) {
   let accessToken = await getTokens("accessToken");

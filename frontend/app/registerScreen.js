@@ -27,7 +27,7 @@ export default function UserRegistration() {
 
   async function registerUser() {
     try {
-      const res = await fetch(`http://${IP}:3000/sign-up`, {
+      const res = await fetch(`http://${IP}/sign-up`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
